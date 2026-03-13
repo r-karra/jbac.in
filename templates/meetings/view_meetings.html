@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | Upcoming Christian Meetings{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">JBAC Meetings</p>
+        <h1>Upcoming Christian Meetings in Andhra Pradesh</h1>
+        <h2>ఆంధ్ర రాష్ట్రంలోని జరగబోయే క్రైస్తవ మీటింగ్స్</h2>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container search-layout">
+        <aside class="search-panel" data-reveal>
+            <h2>Filters</h2>
+            <form method="get">
+                <div class="form-row">
+                    <label for="{{ form.meeting_type.id_for_label }}">Meeting Type</label>
+                    {{ form.meeting_type }}
+                </div>
+                <div class="form-row">
+                    <label for="{{ form.denomination.id_for_label }}">Denomination</label>
+                    {{ form.denomination }}
+                </div>
+                <div class="form-row">
+                    <label for="{{ form.ministry.id_for_label }}">Ministry</label>
+                    {{ form.ministry }}
+                </div>
+                <div class="form-row">
+                    <label for="{{ form.date.id_for_label }}">Date</label>
+                    {{ form.date }}
+                </div>
+                <div class="form-row">
+                    <label for="{{ form.district.id_for_label }}">District</label>
+                    {{ form.district }}
+                </div>
+                <div class="form-row">
+                    <label for="{{ form.city_area.id_for_label }}">City / Area</label>
+                    {{ form.city_area }}
+                </div>
+                <div class="form-row">
+                    <label for="{{ form.mandal.id_for_label }}">Mandal</label>
+                    {{ form.mandal }}
+                </div>
+                <div class="form-row">
+                    <label for="{{ form.village.id_for_label }}">Village</label>
+                    {{ form.village }}
+                </div>
+                <div class="hero-actions">
+                    <button class="button button-primary" type="submit">Search</button>
+                    <a class="button button-secondary" href="{% url 'meetings:view' %}">Reset</a>
+                </div>
+            </form>
+        </aside>
+
+        <div class="results-grid" data-reveal>
+            {% for event in meetings %}
+                <article class="result-card meeting-card">
+                    {% if event.poster %}
+                        <img src="{{ event.poster.url }}" alt="{{ event.title }} poster" class="meeting-poster">
+                    {% endif %}
+                    <h3>{{ event.title }}</h3>
+                    <p>{{ event.start_date }} - {{ event.end_date }}</p>
+                    <p><strong>Location:</strong> {{ event.address }}</p>
+                    <p><strong>Organizer:</strong> {{ event.organizer_name }}</p>
+                    <p><strong>Expected Attendance:</strong> {{ event.estimated_attendance }}</p>
+                    {% if event.youtube_link %}
+                        <p><a href="{{ event.youtube_link }}" target="_blank" rel="noopener">YouTube Channel</a></p>
+                    {% endif %}
+                    {% if event.google_map_location %}
+                        <p><a href="{{ event.google_map_location }}" target="_blank" rel="noopener">Google Map Location</a></p>
+                    {% endif %}
+                    {% if event.additional_info %}
+                        <p>{{ event.additional_info }}</p>
+                    {% endif %}
+                </article>
+            {% empty %}
+                <article class="empty-state">
+                    <h3>No meetings found</h3>
+                    <p>Try changing filters or check back after new meetings are published by admin verification.</p>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

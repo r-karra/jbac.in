@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | Login{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Login / ప్రవేశం</p>
+        <h1>Access your council dashboard</h1>
+        <p class="hero-text">Choose your category, then sign in using your mobile number or email and password.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container auth-grid">
+        <div class="info-card" data-reveal>
+            <h2>Who can log in?</h2>
+            <ul class="check-list">
+                <li>Believer</li>
+                <li>Pastor</li>
+                <li>Student</li>
+                <li>Pastor Association</li>
+                <li>Ministries</li>
+                <li>Church</li>
+                <li>Christian Organization / Company</li>
+            </ul>
+        </div>
+        <form class="form-card" method="post" data-reveal>
+            {% csrf_token %}
+            <h2>Sign in</h2>
+            {% if form.non_field_errors %}
+                <div class="form-errors">{{ form.non_field_errors }}</div>
+            {% endif %}
+            {% for field in form %}
+                <div class="form-row">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="field-error">{{ field.errors|join:', ' }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button class="button button-primary" type="submit">Login</button>
+            <a class="button button-secondary" href="{% url 'accounts:otp-request' %}">Login with OTP</a>
+            <p class="muted">Need a new account? Use the registration center to create the correct profile first.</p>
+        </form>
+    </div>
+</section>
+{% endblock %}

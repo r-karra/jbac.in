@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | {{ article.title }}{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">{{ article.published_at|date:'d M Y' }}</p>
+        <h1>{{ article.title }}</h1>
+        <p class="hero-text">{{ article.summary }}</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container article-layout">
+        <article class="article-card" data-reveal>
+            <div class="article-body">{{ article.content|linebreaks }}</div>
+        </article>
+        <aside class="sidebar-card" data-reveal>
+            <h2>More updates</h2>
+            {% for related in related_articles %}
+                <a class="related-link" href="{% url 'updates:detail' related.slug %}">{{ related.title }}</a>
+            {% empty %}
+                <p class="muted">No related articles available.</p>
+            {% endfor %}
+        </aside>
+    </div>
+</section>
+{% endblock %}

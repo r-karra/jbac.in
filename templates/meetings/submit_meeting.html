@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | Submit Meeting Details{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">JBAC Meetings</p>
+        <h1>సబ్మిట్ చేయుటకు | Submit Meeting Details</h1>
+        <p class="hero-text">క్రైస్తవ సమావేశాల వివరాలను ఈ ఫారమ్ ద్వారా పంపించవచ్చు. మీరు పంపిన సమాచారం పరిశీలించిన తర్వాత వెబ్‌సైట్‌లో ప్రచురించబడుతుంది.</p>
+        <p class="hero-text">You can submit details of Christian meetings through this form. After verification, the information may be published on the website.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container split-layout">
+        <article class="form-card" data-reveal>
+            <h2>Meeting Submission Form</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="form-errors">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="form-row">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.name == 'google_map_location' %}
+                            <button class="button button-secondary" type="button" id="current-location-btn">Use Current Location</button>
+                            <p class="muted" id="location-status">Location not captured yet.</p>
+                        {% endif %}
+                        {% if field.help_text %}<p class="field-help">{{ field.help_text }}</p>{% endif %}
+                        {% for error in field.errors %}
+                            <p class="field-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <div class="hero-actions">
+                    <button class="button button-primary" type="submit">Submit</button>
+                    <button class="button button-secondary" type="reset">Reset</button>
+                </div>
+            </form>
+        </article>
+
+        <aside class="info-card" data-reveal>
+            <p class="panel-label">Important</p>
+            <ul class="check-list">
+                <li>Organizer phone number is collected for verification and is not displayed publicly.</li>
+                <li>Use the current location button to auto-fill latitude and longitude.</li>
+                <li>Poster and YouTube links are optional but improve discoverability.</li>
+            </ul>
+        </aside>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function () {
+    const locationBtn = document.getElementById("current-location-btn");
+    const latInput = document.getElementById("id_latitude");
+    const lngInput = document.getElementById("id_longitude");
+    const mapInput = document.getElementById("id_google_map_location");
+    const locationStatus = document.getElementById("location-status");
+
+    if (!locationBtn || !latInput || !lngInput || !locationStatus) {
+        return;
+    }
+
+    locationBtn.addEventListener("click", function () {
+        if (!navigator.geolocation) {
+            locationStatus.textContent = "Geolocation is not supported in this browser.";
+            return;
+        }
+
+        locationStatus.textContent = "Fetching your location...";
+
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                const lat = position.coords.latitude.toFixed(6);
+                const lng = position.coords.longitude.toFixed(6);
+                latInput.value = lat;
+                lngInput.value = lng;
+                if (mapInput && !mapInput.value) {
+                    mapInput.value = "https://maps.google.com/?q=" + lat + "," + lng;
+                }
+                locationStatus.textContent = "Current location captured successfully.";
+            },
+            function (error) {
+                locationStatus.textContent = "Unable to fetch location: " + error.message;
+            }
+        );
+    });
+})();
+</script>
+{% endblock %}

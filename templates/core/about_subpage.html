@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | {% if section_data %}{{ section_data.title_en }}{% else %}About Us{% endif %}{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">About Us / మా గురించి</p>
+        {% if section_data %}
+            <h1>About Us</h1>
+            <p class="hero-text">Viewing: {{ section_data.title_te }} | {{ section_data.title_en }}</p>
+        {% else %}
+            <h1>Select a submenu to view its content</h1>
+            <p class="hero-text">Admin-managed content will only appear after the user clicks the matching About Us submenu item.</p>
+        {% endif %}
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container about-layout">
+        <aside class="about-menu-card" data-reveal>
+            <h2>About Us Menu</h2>
+            <div class="about-link-list">
+                {% for item in menu_items %}
+                    <a class="about-link{% if item.active %} active{% endif %}" href="{% url 'core:about-section' item.slug %}">
+                        {{ item.title_te }} | {{ item.title_en }}
+                    </a>
+                {% endfor %}
+                <a class="about-link" href="{% url 'core:contact' %}">CONTACT US</a>
+                <a class="about-link" href="{% url 'core:home' %}">HOME</a>
+            </div>
+        </aside>
+        <article class="about-content-card" data-reveal>
+            {% if has_selected_content %}
+                <h2>{{ section_data.title_en }}</h2>
+                <p>{{ section_data.description }}</p>
+                {% if content_source == 'admin' %}
+                    <p class="muted">Content source: Admin-managed page content</p>
+                {% endif %}
+                <ul class="check-list">
+                    {% for point in section_data.points %}
+                        <li>{{ point }}</li>
+                    {% endfor %}
+                </ul>
+
+                {% if section == 'photo-gallery' %}
+                    <div class="gallery-grid">
+                        <div class="gallery-tile">Community Event</div>
+                        <div class="gallery-tile">Prayer Gathering</div>
+                        <div class="gallery-tile">Youth Fellowship</div>
+                        <div class="gallery-tile">Church Outreach</div>
+                        <div class="gallery-tile">Pastor Training</div>
+                        <div class="gallery-tile">Family Meeting</div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <h2>No submenu content selected</h2>
+                <p>Choose one submenu item from the left to view the content uploaded for that specific section.</p>
+                <p class="muted">Content from one submenu will not be shown until that exact submenu is clicked.</p>
+            {% endif %}
+        </article>
+    </div>
+</section>
+{% endblock %}

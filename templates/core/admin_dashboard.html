@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | Admin Dashboard{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Admin Dashboard</p>
+        <h1>Operational summary for council admins</h1>
+        <p class="hero-text">Track pending approvals and recently submitted registrations from one screen.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container data-grid">
+        <article class="metric-card" data-reveal>
+            <strong>{{ stats.users }}</strong>
+            <span>Total users</span>
+        </article>
+        <article class="metric-card" data-reveal>
+            <strong>{{ stats.pending_believers }}</strong>
+            <span>Pending believers</span>
+        </article>
+        <article class="metric-card" data-reveal>
+            <strong>{{ stats.pending_pastors }}</strong>
+            <span>Pending pastors</span>
+        </article>
+        <article class="metric-card" data-reveal>
+            <strong>{{ stats.pending_students }}</strong>
+            <span>Pending students</span>
+        </article>
+        <article class="metric-card" data-reveal>
+            <strong>{{ stats.pending_churches }}</strong>
+            <span>Pending churches</span>
+        </article>
+        <article class="metric-card" data-reveal>
+            <strong>{{ stats.pending_organizations }}</strong>
+            <span>Pending organizations</span>
+        </article>
+    </div>
+</section>
+
+<section class="section-shell section-contrast">
+    <div class="container recent-grid">
+        <article class="list-card" data-reveal>
+            <h2>Recent believers</h2>
+            {% for row in recent_registrations.believers %}
+                <div>
+                    <p>{{ row.full_name }}</p>
+                    <div class="inline-meta">
+                        <span class="meta-pill">{{ row.user.mobile_number }}</span>
+                        <span class="meta-pill">{{ row.created_at|date:'d M Y' }}</span>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No recent believer registrations.</p>
+            {% endfor %}
+        </article>
+        <article class="list-card" data-reveal>
+            <h2>Recent pastors</h2>
+            {% for row in recent_registrations.pastors %}
+                <div>
+                    <p>{{ row.pastor_name }} ({{ row.church_name }})</p>
+                    <div class="inline-meta">
+                        <span class="meta-pill">{{ row.district }}</span>
+                        <span class="meta-pill">{{ row.created_at|date:'d M Y' }}</span>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No recent pastor registrations.</p>
+            {% endfor %}
+        </article>
+        <article class="list-card" data-reveal>
+            <h2>Recent churches</h2>
+            {% for row in recent_registrations.churches %}
+                <div>
+                    <p>{{ row.church_name }}</p>
+                    <div class="inline-meta">
+                        <span class="meta-pill">{{ row.pastor_name }}</span>
+                        <span class="meta-pill">{{ row.created_at|date:'d M Y' }}</span>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No recent church registrations.</p>
+            {% endfor %}
+        </article>
+    </div>
+</section>
+{% endblock %}

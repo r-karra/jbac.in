@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | {{ config.title }}{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">{{ config.title_te }}</p>
+        <h1>{{ config.title }}</h1>
+        <p class="hero-text">{{ config.description }}</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container auth-grid">
+        <div class="info-card" data-reveal>
+            <h2>Before you submit</h2>
+            <ul class="check-list">
+                <li>Provide an active mobile number for login and future communication.</li>
+                <li>Public directory visibility depends on admin approval.</li>
+                <li>Believer and student details remain confidential by default.</li>
+            </ul>
+        </div>
+        <form class="form-card" method="post" data-reveal>
+            {% csrf_token %}
+            <h2>Complete the form</h2>
+            {% if form.non_field_errors %}
+                <div class="form-errors">{{ form.non_field_errors }}</div>
+            {% endif %}
+            {% for field in form %}
+                <div class="form-row{% if field.field.widget.input_type == 'checkbox' %} form-row-checkbox{% endif %}">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="field-help">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                        <div class="field-error">{{ field.errors|join:', ' }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button class="button button-primary" type="submit">Submit registration</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

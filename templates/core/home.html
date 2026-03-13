@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | Home{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container hero-grid">
+        <div class="hero-copy" data-reveal>
+            <p class="eyebrow">JBAC Digital Council</p>
+            <h1>Register believers, connect churches, and publish trusted updates in one bilingual platform.</h1>
+            <p class="hero-text">JBAC helps the Christian community across Andhra Pradesh maintain a secure directory, support pastoral search, collect registrations, and share news in English and Telugu.</p>
+            <div class="hero-actions">
+                <a class="button button-primary" href="{% url 'directory:register' %}">Start Registration</a>
+                <a class="button button-secondary" href="{% url 'directory:search' %}">Search Directory</a>
+            </div>
+            <div class="pill-row">
+                <span>Believers / విశ్వాసులు</span>
+                <span>Pastors / పాస్టర్లు</span>
+                <span>Students / విద్యార్థులు</span>
+                <span>Churches / చర్చిలు</span>
+                <span>Organizations / సంస్థలు</span>
+            </div>
+        </div>
+        <div class="hero-panel" data-reveal>
+            <div class="panel-card panel-card-accent">
+                <p class="panel-label">Confidentiality Notice</p>
+                <h2>Member details stay protected until approved for public search.</h2>
+                <p>Profiles can be reviewed in admin before they appear in the public church or pastor directory.</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <strong>{{ stats.believers }}</strong>
+                    <span>Believer records</span>
+                </div>
+                <div class="stat-card">
+                    <strong>{{ stats.pastors }}</strong>
+                    <span>Pastor profiles</span>
+                </div>
+                <div class="stat-card">
+                    <strong>{{ stats.students }}</strong>
+                    <span>Student profiles</span>
+                </div>
+                <div class="stat-card">
+                    <strong>{{ stats.churches }}</strong>
+                    <span>Church registrations</span>
+                </div>
+                <div class="stat-card stat-card-wide">
+                    <strong>{{ stats.organizations }}</strong>
+                    <span>Organizations and ministries</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container">
+        <div class="section-heading" data-reveal>
+            <p class="eyebrow">Core Modules</p>
+            <h2>Built around registration, search, updates, and council administration.</h2>
+        </div>
+        <div class="feature-grid">
+            <article class="feature-card" data-reveal>
+                <h3>Multi-role onboarding</h3>
+                <p>Separate registration flows for believers, pastors, students, churches, and organizations with secure login by category.</p>
+            </article>
+            <article class="feature-card" data-reveal>
+                <h3>Directory search</h3>
+                <p>Filter church and pastor listings by district, state, and search term once the records are approved for public access.</p>
+            </article>
+            <article class="feature-card" data-reveal>
+                <h3>News publishing</h3>
+                <p>Share community announcements, ministry updates, and important notices from a manageable admin console.</p>
+            </article>
+            <article class="feature-card" data-reveal>
+                <h3>Admin control</h3>
+                <p>Use Django admin to review registrations, approve directory visibility, and maintain content quality.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section-shell section-contrast">
+    <div class="container split-layout">
+        <div data-reveal>
+            <p class="eyebrow">Why JBAC</p>
+            <h2>Designed for community coordination, not just form collection.</h2>
+            <p>This site combines registration management with a trusted ministry directory and an update stream for the Christian community.</p>
+            <ul class="check-list">
+                <li>Role-based logins for each community category</li>
+                <li>Public search only for approved directory records</li>
+                <li>Responsive layout for mobile and desktop users</li>
+                <li>Bilingual copy throughout the core interface</li>
+            </ul>
+        </div>
+        <div class="timeline-card" data-reveal>
+            <div>
+                <span>01</span>
+                <p>Register an individual, church, or ministry profile.</p>
+            </div>
+            <div>
+                <span>02</span>
+                <p>Review and approve records through the admin dashboard.</p>
+            </div>
+            <div>
+                <span>03</span>
+                <p>Publish directory results and council news for the community.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container">
+        <div class="section-heading" data-reveal>
+            <p class="eyebrow">Latest Updates</p>
+            <h2>News and announcements</h2>
+        </div>
+        <div class="news-grid">
+            {% for article in featured_articles|default:latest_articles %}
+                <article class="news-card" data-reveal>
+                    <p class="news-date">{{ article.published_at|date:'d M Y' }}</p>
+                    <h3>{{ article.title }}</h3>
+                    <p>{{ article.summary|default:article.content|truncatechars:140 }}</p>
+                    <a href="{% url 'updates:detail' article.slug %}">Read update</a>
+                </article>
+            {% empty %}
+                <article class="news-card" data-reveal>
+                    <p class="news-date">Admin ready</p>
+                    <h3>No published updates yet</h3>
+                    <p>Use the admin console to add the first JBAC announcement and it will appear here automatically.</p>
+                    <a href="{% url 'updates:list' %}">Open news section</a>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | District Map Search{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">District Map Search</p>
+        <h1>Find churches by district on map</h1>
+        <p class="hero-text">This map shows approved and public church records with location coordinates.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container search-layout">
+        <form class="search-panel" method="get" data-reveal>
+            <div class="form-row">
+                <label for="district">District</label>
+                <select class="form-select" name="district" id="district">
+                    <option value="">All districts</option>
+                    {% for value, label in district_choices %}
+                        <option value="{{ value }}" {% if district == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-row">
+                <label for="state">State</label>
+                <select class="form-select" name="state" id="state">
+                    <option value="">All states</option>
+                    {% for value, label in state_choices %}
+                        <option value="{{ value }}" {% if state == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="button button-primary" type="submit">Apply map filters</button>
+        </form>
+        <div data-reveal>
+            <div id="district-map" class="map-shell"></div>
+            <p class="map-note">Records shown: {{ markers|length }}</p>
+        </div>
+    </div>
+</section>
+
+{{ markers|json_script:"map-markers" }}
+{{ district_center|json_script:"map-center" }}
+{% endblock %}
+
+{% block extra_scripts %}
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script>
+        const markerData = JSON.parse(document.getElementById('map-markers').textContent);
+        const center = JSON.parse(document.getElementById('map-center').textContent);
+
+        const map = L.map('district-map').setView(center, markerData.length ? 9 : 7);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        markerData.forEach(item => {
+            if (item.lat && item.lng) {
+                L.marker([item.lat, item.lng])
+                    .addTo(map)
+                    .bindPopup(`<strong>${item.name}</strong><br/>Pastor: ${item.pastor}<br/>${item.district}, ${item.state}`);
+            }
+        });
+    </script>
+{% endblock %}

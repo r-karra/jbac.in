@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | Search{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Directory Search</p>
+        <h1>Search approved pastors and churches</h1>
+        <p class="hero-text">Use district and state filters to find ministry contacts that have been cleared for public visibility.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container search-layout">
+        <form class="search-panel" method="get" data-reveal>
+            <div class="form-row">
+                <label for="query">Name, church, village, or phone</label>
+                <input class="form-input" type="text" name="query" id="query" value="{{ query }}" placeholder="Search by name or church">
+            </div>
+            <div class="form-row">
+                <label for="type">Directory type</label>
+                <select class="form-select" name="type" id="type">
+                    <option value="all" {% if directory_type == 'all' %}selected{% endif %}>All</option>
+                    <option value="pastor" {% if directory_type == 'pastor' %}selected{% endif %}>Pastors</option>
+                    <option value="church" {% if directory_type == 'church' %}selected{% endif %}>Churches</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label for="district">District</label>
+                <select class="form-select" name="district" id="district">
+                    <option value="">All districts</option>
+                    {% for value, label in district_choices %}
+                        <option value="{{ value }}" {% if district == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-row">
+                <label for="state">State</label>
+                <select class="form-select" name="state" id="state">
+                    <option value="">All states</option>
+                    {% for value, label in state_choices %}
+                        <option value="{{ value }}" {% if state == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="button button-primary" type="submit">Search directory</button>
+        </form>
+        <div>
+            {% if pastors or churches %}
+                <div class="results-grid">
+                    {% for pastor in pastors %}
+                        <article class="result-card" data-reveal>
+                            <p class="result-tag">Pastor</p>
+                            <h3>{{ pastor.pastor_name }}</h3>
+                            <p>{{ pastor.church_name }}</p>
+                            <p>{{ pastor.district }}, {{ pastor.state }}</p>
+                            <p>{{ pastor.user.mobile_number }}</p>
+                            <p>{{ pastor.user.email|default:'Email not provided' }}</p>
+                        </article>
+                    {% endfor %}
+                    {% for church in churches %}
+                        <article class="result-card" data-reveal>
+                            <p class="result-tag">Church</p>
+                            <h3>{{ church.church_name }}</h3>
+                            <p>Pastor: {{ church.pastor_name }}</p>
+                            <p>{{ church.village }}{% if church.village and church.district %}, {% endif %}{{ church.district }}</p>
+                            <p>{{ church.user.mobile_number }}</p>
+                            <p>{{ church.user.email|default:'Email not provided' }}</p>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state" data-reveal>
+                    <h2>No public records matched your search</h2>
+                    <p>Try another district or remove a filter. Admin approval is required before profiles appear here.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

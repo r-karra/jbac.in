@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | Register{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Registration Center</p>
+        <h1>Choose the right JBAC registration path</h1>
+        <p class="hero-text">Every category has its own secure form so the council can maintain accurate data and protect sensitive information.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container card-grid">
+        {% for item in registrations %}
+            <article class="feature-card feature-card-large" data-reveal>
+                <p class="panel-label">{{ item.title_te }}</p>
+                <h2>{{ item.title }}</h2>
+                <p>{{ item.description }}</p>
+                <a class="button button-secondary" href="{% url 'directory:register-category' item.slug %}">Open form</a>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

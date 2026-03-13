@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | Verify OTP{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Verify OTP</p>
+        <h1>Enter your one-time code</h1>
+        <p class="hero-text">Category: {{ challenge.get_role_display }} | Identifier: {{ challenge.identifier }}</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container auth-grid">
+        <div class="info-card" data-reveal>
+            <h2>OTP Tips</h2>
+            <ul class="check-list">
+                <li>Enter the 6-digit code exactly once.</li>
+                <li>Use request OTP again if code expires.</li>
+                <li>Do not share OTP with anyone.</li>
+            </ul>
+        </div>
+        <form class="form-card" method="post" data-reveal>
+            {% csrf_token %}
+            <h2>Verify and login</h2>
+            {% if form.non_field_errors %}
+                <div class="form-errors">{{ form.non_field_errors }}</div>
+            {% endif %}
+            {% for field in form %}
+                <div class="form-row">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="field-error">{{ field.errors|join:', ' }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button class="button button-primary" type="submit">Verify OTP</button>
+            <a class="button button-secondary" href="{% url 'accounts:otp-request' %}">Request new OTP</a>
+        </form>
+    </div>
+</section>
+{% endblock %}

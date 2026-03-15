@@ -275,53 +275,71 @@ def _fetch_songs_from_api(query, category):
 
 
 def _fetch_christian_books(query):
-    books_api_url = getattr(settings, "CHRISTIAN_BOOKS_API_URL", "https://www.googleapis.com/books/v1/volumes").strip()
-    max_results = max(6, min(40, int(getattr(settings, "CHRISTIAN_BOOKS_MAX_RESULTS", "30"))))
-    default_query = getattr(settings, "CHRISTIAN_BOOKS_DEFAULT_QUERY", "subject:Christianity")
+    books_api_url = getattr(settings, "CHRISTIAN_BOOKS_API_URL", "https://gutendex.com/books").strip()
+    max_results = max(6, min(100, int(getattr(settings, "CHRISTIAN_BOOKS_MAX_RESULTS", "36"))))
+    default_query = getattr(settings, "CHRISTIAN_BOOKS_DEFAULT_QUERY", "christianity")
 
     if not books_api_url:
         return [], "Christian books source is not configured."
 
     query_text = query.strip() or default_query
-    endpoint = f"{books_api_url}?{parse.urlencode({'q': query_text, 'printType': 'books', 'maxResults': max_results})}"
+    endpoint = f"{books_api_url}?{parse.urlencode({'search': query_text})}"
 
     try:
         payload = _cached_fetch_json(endpoint)
     except (HTTPError, URLError, TimeoutError, json.JSONDecodeError, ValueError):
         return [], "Christian books service is temporarily unavailable."
 
+    items = payload.get("results", []) if isinstance(payload, dict) else _extract_items(payload)
     books = []
-    for item in _extract_items(payload):
+    for item in items:
         if not isinstance(item, dict):
             continue
-        info = item.get("volumeInfo") or {}
-        if not isinstance(info, dict):
+        formats = item.get("formats") or {}
+        if not isinstance(formats, dict):
             continue
-        title = str(info.get("title") or "Untitled book").strip()
-        authors = info.get("authors") or []
-        if isinstance(authors, list):
-            authors_text = ", ".join(str(author).strip() for author in authors if str(author).strip())
-        else:
-            authors_text = str(authors).strip()
 
-        image_links = info.get("imageLinks") or {}
-        if not isinstance(image_links, dict):
-            image_links = {}
+        open_link = (
+            formats.get("text/html")
+            or formats.get("application/epub+zip")
+            or formats.get("text/plain; charset=utf-8")
+            or formats.get("application/pdf")
+            or ""
+        )
+        if not open_link:
+            continue
+
+        title = str(item.get("title") or "Untitled book").strip()
+        authors = item.get("authors") or []
+        authors_text = ", ".join(
+            str(author.get("name") or "").strip()
+            for author in authors
+            if isinstance(author, dict) and str(author.get("name") or "").strip()
+        )
+
+        download_count = item.get("download_count") or ""
+        subjects = item.get("subjects") or []
+        subjects_text = ", ".join(str(subject).strip() for subject in subjects[:4] if str(subject).strip())
+        cover_image = formats.get("image/jpeg") or ""
 
         books.append(
             {
                 "title": title,
                 "authors": authors_text,
-                "description": str(info.get("description") or "").strip(),
-                "published_date": str(info.get("publishedDate") or "").strip(),
-                "page_count": info.get("pageCount") or "",
-                "thumbnail": image_links.get("thumbnail") or image_links.get("smallThumbnail") or "",
-                "info_link": str(info.get("infoLink") or "").strip(),
+                "description": "",
+                "published_date": "",
+                "page_count": "",
+                "thumbnail": cover_image,
+                "info_link": str(open_link).strip(),
+                "download_count": download_count,
+                "subjects": subjects_text,
             }
         )
+        if len(books) >= max_results:
+            break
 
     books.sort(key=lambda row: str(row.get("title") or "").lower())
-    return books, "Source: Google Books API"
+    return books, "Source: Gutendex free books API"
 
 
 def songs_search(request, category=None):

@@ -6,6 +6,64 @@ if (menuToggle && menu) {
         const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
         menuToggle.setAttribute('aria-expanded', String(!expanded));
         menu.classList.toggle('open');
+        if (expanded) {
+            document.querySelectorAll('.nav-dropdown.open').forEach(dropdown => {
+                dropdown.classList.remove('open');
+                const trigger = dropdown.querySelector('[data-nav-dropdown-trigger]');
+                if (trigger) {
+                    trigger.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+    });
+}
+
+const navDropdownTriggers = document.querySelectorAll('[data-nav-dropdown-trigger]');
+const compactNavQuery = window.matchMedia('(max-width: 980px)');
+
+const closeOtherDropdowns = current => {
+    document.querySelectorAll('.nav-dropdown.open').forEach(dropdown => {
+        if (current && dropdown === current) {
+            return;
+        }
+        dropdown.classList.remove('open');
+        const trigger = dropdown.querySelector('[data-nav-dropdown-trigger]');
+        if (trigger) {
+            trigger.setAttribute('aria-expanded', 'false');
+        }
+    });
+};
+
+if (navDropdownTriggers.length) {
+    navDropdownTriggers.forEach(trigger => {
+        trigger.addEventListener('click', event => {
+            if (!compactNavQuery.matches) {
+                return;
+            }
+
+            const dropdown = trigger.closest('.nav-dropdown');
+            if (!dropdown) {
+                return;
+            }
+
+            const isOpen = dropdown.classList.contains('open');
+            if (!isOpen) {
+                event.preventDefault();
+                closeOtherDropdowns(dropdown);
+                dropdown.classList.add('open');
+                trigger.setAttribute('aria-expanded', 'true');
+            }
+        });
+    });
+
+    document.addEventListener('click', event => {
+        if (!compactNavQuery.matches) {
+            return;
+        }
+        if (event.target.closest('.nav-dropdown') || event.target.closest('[data-menu-toggle]')) {
+            return;
+        }
+        closeOtherDropdowns(null);
     });
 }
 

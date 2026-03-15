@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | Christian Songs{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Songs Library</p>
+        <h1>Search Telugu, Hymns, and Choruses</h1>
+        <p class="hero-text">Browse Andhra Christian songs by category and find lyrics quickly for prayer meetings, worship, and fellowship gatherings.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container search-layout">
+        <form class="search-panel" method="get" data-reveal>
+            <div class="form-row">
+                <label for="q">Song title or lyrics keyword</label>
+                <input class="form-input" type="text" name="q" id="q" value="{{ query }}" placeholder="Search Telugu Christian songs">
+            </div>
+            <div class="form-row">
+                <label for="category">Category</label>
+                <select class="form-select" name="category" id="category">
+                    {% for value, label in categories.items %}
+                        <option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="button button-primary" type="submit">Search songs</button>
+        </form>
+
+        <div>
+            {% if service_note %}
+                <div class="message info" data-reveal>
+                    {{ service_note }}
+                </div>
+            {% endif %}
+
+            {% if songs %}
+                <p class="result-tag" data-reveal>Showing {{ songs|length }} of {{ total_matches }} songs</p>
+                {% for group in grouped_songs %}
+                    <section class="song-group" data-reveal>
+                        <h2>{{ group.label }}</h2>
+                        {% if group.songs %}
+                            <ol class="songs-number-list">
+                                {% for song in group.songs %}
+                                    <li class="song-list-item">
+                                        <span class="song-serial">{{ song.song_number|default:forloop.counter }}</span>
+                                        <a class="song-list-link" href="{% url 'songs:detail' %}?category={{ song.category }}&number={{ song.song_number }}&title={{ song.title|urlencode }}&next={{ request.get_full_path|urlencode }}">
+                                            <strong>{{ song.title }}</strong>
+                                            {% if song.song_number %}
+                                                <span class="muted">(Song No: {{ song.song_number }})</span>
+                                            {% endif %}
+                                            {% if song.language %}
+                                                <span class="muted">- {{ song.language }}</span>
+                                            {% endif %}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                        {% else %}
+                            <p>No songs found in this section for your search.</p>
+                        {% endif %}
+                    </section>
+                {% endfor %}
+                {% if page_obj and page_obj.paginator.num_pages > 1 %}
+                    <nav class="pagination" aria-label="Songs pagination" data-reveal>
+                        {% if page_obj.has_previous %}
+                            <a class="button button-secondary" href="{{ request.path }}?q={{ query|urlencode }}&category={{ selected_category }}&page={{ page_obj.previous_page_number }}">Previous</a>
+                        {% endif %}
+                        <div class="pagination-center">
+                            {% for link in pagination_links %}
+                                {% if link.type == 'ellipsis' %}
+                                    <span class="pagination-ellipsis" aria-hidden="true">...</span>
+                                {% else %}
+                                    <a
+                                        class="pagination-number{% if link.active %} pagination-number-active{% endif %}"
+                                        href="{{ request.path }}?q={{ query|urlencode }}&category={{ selected_category }}&page={{ link.number }}"
+                                        {% if link.active %}aria-current="page"{% endif %}
+                                    >{{ link.number }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <form class="pagination-jump" method="get" action="{{ request.path }}">
+                            <input type="hidden" name="q" value="{{ query }}">
+                            <input type="hidden" name="category" value="{{ selected_category }}">
+                            <label for="jump-page">Jump to</label>
+                            <input
+                                class="pagination-jump-input"
+                                type="number"
+                                id="jump-page"
+                                name="page"
+                                min="1"
+                                max="{{ page_obj.paginator.num_pages }}"
+                                value="{{ page_obj.number }}"
+                            >
+                            <button class="button button-secondary" type="submit">Go</button>
+                        </form>
+                        {% if page_obj.has_next %}
+                            <a class="button button-secondary" href="{{ request.path }}?q={{ query|urlencode }}&category={{ selected_category }}&page={{ page_obj.next_page_number }}">Next</a>
+                        {% endif %}
+                    </nav>
+                {% endif %}
+            {% else %}
+                <div class="empty-state" data-reveal>
+                    <h2>No songs matched this filter</h2>
+                    <p>Try another keyword or switch category between Telugu, Hymns, and Choruses.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

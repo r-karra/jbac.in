@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | Song Lyrics{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Song Detail</p>
+        <h1>{{ song.title }}</h1>
+        <p class="hero-text">Complete lyrics view for worship and fellowship use.</p>
+        <div class="hero-actions">
+            <a class="button button-secondary" href="{{ next_url }}">Back to songs</a>
+        </div>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container">
+        {% if service_note %}
+            <div class="message info" data-reveal>
+                {{ service_note }}
+            </div>
+        {% endif %}
+        <article class="article-card song-detail-card" data-reveal>
+            <div class="inline-meta">
+                <span class="meta-pill">{{ song.category|title }}</span>
+                {% if song.song_number %}
+                    <span class="meta-pill">Song No: {{ song.song_number }}</span>
+                {% endif %}
+                {% if song.language %}
+                    <span class="meta-pill">{{ song.language }}</span>
+                {% endif %}
+            </div>
+            {% if song.artist %}
+                <p><strong>Artist:</strong> {{ song.artist }}</p>
+            {% endif %}
+            {% if song.romanized_title %}
+                <p><strong>Romanized Title:</strong> {{ song.romanized_title }}</p>
+            {% endif %}
+            <div class="song-full-lyrics">{{ song.lyrics|linebreaksbr }}</div>
+            {% if song.song_url %}
+                <p>
+                    <a class="button button-secondary" href="{{ song.song_url }}" target="_blank" rel="noopener noreferrer">Open source song link</a>
+                </p>
+            {% endif %}
+        </article>
+    </div>
+</section>
+{% endblock %}

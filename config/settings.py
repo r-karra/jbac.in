@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "updates",
     "api",
     "meetings",
+    "songs",
 ]
 
 MIDDLEWARE = [
@@ -160,5 +161,13 @@ OTP_MAX_VERIFY_ATTEMPTS = int(os.getenv("OTP_MAX_VERIFY_ATTEMPTS", "5"))
 OTP_LOCK_MINUTES = int(os.getenv("OTP_LOCK_MINUTES", "15"))
 OTP_MAX_REQUESTS_PER_WINDOW = int(os.getenv("OTP_MAX_REQUESTS_PER_WINDOW", "5"))
 OTP_REQUEST_WINDOW_MINUTES = int(os.getenv("OTP_REQUEST_WINDOW_MINUTES", "15"))
+
+ANDHRA_CHRISTIAN_SONGS_API_URL = os.getenv("ANDHRA_CHRISTIAN_SONGS_API_URL", "")
+ANDHRA_CHRISTIAN_SONGS_API_KEY = os.getenv("ANDHRA_CHRISTIAN_SONGS_API_KEY", "")
+ANDHRA_CHRISTIAN_SONGS_BOOKS_URL = os.getenv(
+    "ANDHRA_CHRISTIAN_SONGS_BOOKS_URL",
+    "https://raw.githubusercontent.com/WeCareLtd/SingUntoLord_DB/main/availableBooks.json",
+)
+ANDHRA_CHRISTIAN_SONGS_TIMEOUT_SECONDS = int(os.getenv("ANDHRA_CHRISTIAN_SONGS_TIMEOUT_SECONDS", "10"))
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

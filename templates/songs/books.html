@@ -6,8 +6,8 @@
 <section class="page-hero page-hero-tight">
     <div class="container" data-reveal>
         <p class="eyebrow">Songs&Books</p>
-        <h1>Christian Books</h1>
-        <p class="hero-text">Discover Christian books through a live API feed and search by topic, author, or title keywords.</p>
+        <h1>Free Christian Books</h1>
+        <p class="hero-text">Discover free Christian/public-domain books and open them directly online with one click.</p>
     </div>
 </section>
 
@@ -16,7 +16,7 @@
         <form class="search-panel" method="get" data-reveal>
             <div class="form-row">
                 <label for="q">Search books</label>
-                <input class="form-input" type="text" name="q" id="q" value="{{ query }}" placeholder="Ex: prayer, discipleship, grace">
+                <input class="form-input" type="text" name="q" id="q" value="{{ query }}" placeholder="Ex: christianity, faith, prayer, gospel">
             </div>
             <button class="button button-primary" type="submit">Search books</button>
         </form>
@@ -38,21 +38,20 @@
                             {% else %}
                                 <div class="book-cover-placeholder">No Cover</div>
                             {% endif %}
-                            <h3>{{ book.title }}</h3>
+                            <h3>
+                                <a href="{{ book.info_link }}" target="_blank" rel="noopener noreferrer">{{ book.title }}</a>
+                            </h3>
                             {% if book.authors %}
                                 <p><strong>Author(s):</strong> {{ book.authors }}</p>
                             {% endif %}
-                            {% if book.published_date %}
-                                <p><strong>Published:</strong> {{ book.published_date }}</p>
+                            {% if book.download_count %}
+                                <p><strong>Downloads:</strong> {{ book.download_count }}</p>
                             {% endif %}
-                            {% if book.page_count %}
-                                <p><strong>Pages:</strong> {{ book.page_count }}</p>
-                            {% endif %}
-                            {% if book.description %}
-                                <p>{{ book.description|truncatechars:240 }}</p>
+                            {% if book.subjects %}
+                                <p><strong>Topics:</strong> {{ book.subjects }}</p>
                             {% endif %}
                             {% if book.info_link %}
-                                <a class="button button-secondary" href="{{ book.info_link }}" target="_blank" rel="noopener noreferrer">Read details</a>
+                                <a class="button button-secondary" href="{{ book.info_link }}" target="_blank" rel="noopener noreferrer">Open Free Book</a>
                             {% endif %}
                         </article>
                     {% endfor %}
@@ -84,7 +83,7 @@
             {% else %}
                 <div class="empty-state" data-reveal>
                     <h2>No books matched your search</h2>
-                    <p>Try a broader keyword like faith, worship, prayer, church history, or discipleship.</p>
+                    <p>Try a broader keyword like christianity, bible, gospel, church history, theology, or prayer.</p>
                 </div>
             {% endif %}
         </div>

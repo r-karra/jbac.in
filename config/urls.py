@@ -14,6 +14,7 @@ urlpatterns = [
     path("directory/", include("directory.urls")),
     path("news/", include("updates.urls")),
     path("meetings/", include("meetings.urls")),
+    path("songs/", include("songs.urls")),
     path("api/", include("api.urls")),
 ]
 

@@ -53,6 +53,14 @@
                         <a href="{% url 'meetings:view' %}">View Meeting Details</a>
                     </div>
                 </div>
+                <div class="nav-dropdown">
+                    <a class="nav-dropdown-trigger" href="{% url 'songs:search' %}">Songs / పాటలు</a>
+                    <div class="submenu-panel">
+                        <a href="{% url 'songs:category' 'telugu' %}">Telugu Songs</a>
+                        <a href="{% url 'songs:category' 'hymns' %}">Hymns</a>
+                        <a href="{% url 'songs:category' 'choruses' %}">Choruses</a>
+                    </div>
+                </div>
                 <a href="{% url 'directory:search' %}">Search / శోధన</a>
                 <a href="{% url 'directory:map-search' %}">District Map</a>
                 <a href="{% url 'updates:list' %}">News / వార్తలు</a>

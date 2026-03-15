@@ -2,14 +2,23 @@ import os
 import sys
 from pathlib import Path
 
-import dj_database_url
+try:
+    import dj_database_url
+except ImportError:
+    dj_database_url = None
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+default_allowed_hosts = [
+    "127.0.0.1",
+    "localhost",
+    "rkarra.pythonanywhere.com",
+]
 
 SECRET_KEY = os.getenv("SECRET_KEY", "jbac-development-secret-key")
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if host.strip()]
+ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", ",".join(default_allowed_hosts)).split(",") if host.strip()]
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if origin.strip()]
 
 INSTALLED_APPS = [
@@ -26,6 +35,7 @@ INSTALLED_APPS = [
     "updates",
     "api",
     "meetings",
+    "songs",
 ]
 
 MIDDLEWARE = [
@@ -59,13 +69,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
-DATABASES = {
-    "default": dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600,
-    )
+default_sqlite_db = {
+    "ENGINE": "django.db.backends.sqlite3",
+    "NAME": BASE_DIR / "db.sqlite3",
 }
+
+if dj_database_url is not None:
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+            conn_max_age=600,
+        )
+    }
+else:
+    DATABASES = {"default": default_sqlite_db}
 
 
 # Password validation
@@ -144,5 +161,13 @@ OTP_MAX_VERIFY_ATTEMPTS = int(os.getenv("OTP_MAX_VERIFY_ATTEMPTS", "5"))
 OTP_LOCK_MINUTES = int(os.getenv("OTP_LOCK_MINUTES", "15"))
 OTP_MAX_REQUESTS_PER_WINDOW = int(os.getenv("OTP_MAX_REQUESTS_PER_WINDOW", "5"))
 OTP_REQUEST_WINDOW_MINUTES = int(os.getenv("OTP_REQUEST_WINDOW_MINUTES", "15"))
+
+ANDHRA_CHRISTIAN_SONGS_API_URL = os.getenv("ANDHRA_CHRISTIAN_SONGS_API_URL", "")
+ANDHRA_CHRISTIAN_SONGS_API_KEY = os.getenv("ANDHRA_CHRISTIAN_SONGS_API_KEY", "")
+ANDHRA_CHRISTIAN_SONGS_BOOKS_URL = os.getenv(
+    "ANDHRA_CHRISTIAN_SONGS_BOOKS_URL",
+    "https://raw.githubusercontent.com/WeCareLtd/SingUntoLord_DB/main/availableBooks.json",
+)
+ANDHRA_CHRISTIAN_SONGS_TIMEOUT_SECONDS = int(os.getenv("ANDHRA_CHRISTIAN_SONGS_TIMEOUT_SECONDS", "10"))
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

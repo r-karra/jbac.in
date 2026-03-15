@@ -79,6 +79,43 @@ Use Django admin to:
 
 This repository includes a `Dockerfile` for container-based deployment.
 
+### PythonAnywhere
+
+Use a WSGI file that points Python to the project root before Django loads settings.
+
+Example `/var/www/<username>_pythonanywhere_com_wsgi.py`:
+
+```python
+import os
+import sys
+
+project_home = "/home/<username>/jbac.in"
+if project_home not in sys.path:
+	sys.path.insert(0, project_home)
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+
+from django.core.wsgi import get_wsgi_application
+
+application = get_wsgi_application()
+```
+
+Also make sure the PythonAnywhere web app is using the same virtualenv where you installed the project requirements:
+
+```bash
+mkvirtualenv --python=/usr/bin/python3.10 jbac-env
+workon jbac-env
+pip install -r /home/<username>/jbac.in/requirements.txt
+```
+
+Then in the Web tab:
+
+- Set the source code path to `/home/<username>/jbac.in`
+- Set the virtualenv path to `/home/<username>/.virtualenvs/jbac-env`
+- Reload the web app after saving the WSGI file
+
+If `DATABASE_URL` is not set, the project falls back to SQLite.
+
 ### AWS
 
 - Build the image and push it to ECR.

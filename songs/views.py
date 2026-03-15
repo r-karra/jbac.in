@@ -204,7 +204,10 @@ def _normalize_category(raw_value):
 
 
 def _get_json(url, headers=None):
-    headers = headers or {"Accept": "application/json"}
+    headers = headers or {
+        "Accept": "application/json",
+        "User-Agent": "Mozilla/5.0 (compatible; JBACBooksBot/1.0; +https://rkarra.pythonanywhere.com)",
+    }
     request_obj = request.Request(url, headers=headers)
     timeout = max(1, int(getattr(settings, "ANDHRA_CHRISTIAN_SONGS_TIMEOUT_SECONDS", 10)))
     with request.urlopen(request_obj, timeout=timeout) as response:
@@ -393,28 +396,40 @@ def _fetch_songs_from_api(query, category):
 
 
 def _fetch_christian_books(query):
-    books_api_url = getattr(settings, "CHRISTIAN_BOOKS_API_URL", "https://gutendex.com/books").strip()
+    configured_books_api_url = getattr(settings, "CHRISTIAN_BOOKS_API_URL", "").strip()
     max_results = max(6, min(100, int(getattr(settings, "CHRISTIAN_BOOKS_MAX_RESULTS", "36"))))
     default_query = getattr(settings, "CHRISTIAN_BOOKS_DEFAULT_QUERY", "christianity")
 
-    if not books_api_url:
-        return [], "Christian books source is not configured."
-
     user_query = query.strip()
     query_text = user_query or default_query
-    endpoint = f"{books_api_url}?{parse.urlencode({'search': query_text})}"
+    candidate_sources = []
+    if configured_books_api_url:
+        candidate_sources.append(configured_books_api_url)
+    candidate_sources.extend([
+        "https://gutendex.com/books/",
+        "https://gutendex.com/books",
+    ])
 
-    try:
-        payload = _cached_fetch_json(endpoint)
-    except (HTTPError, URLError, TimeoutError, json.JSONDecodeError, ValueError):
+    payload = None
+    for source in candidate_sources:
+        source = source.strip()
+        if not source:
+            continue
+        separator = "&" if "?" in source else "?"
+        endpoint = f"{source}{separator}{parse.urlencode({'search': query_text})}"
+        try:
+            payload = _cached_fetch_json(endpoint)
+            break
+        except (HTTPError, URLError, TimeoutError, json.JSONDecodeError, ValueError):
+            continue
+
+    if payload is None:
         fallback = _filter_fallback_books(user_query)
         return fallback, "Source: Curated free Christian books (fallback mode)"
 
     items = []
     current_payload = payload
     visited_urls = set()
-    current_url = endpoint
-
     while isinstance(current_payload, dict):
         items.extend(current_payload.get("results", []))
         if len(items) >= max_results:

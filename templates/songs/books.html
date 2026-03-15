@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | Christian Books{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Songs&Books</p>
+        <h1>Christian Books</h1>
+        <p class="hero-text">Discover Christian books through a live API feed and search by topic, author, or title keywords.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container search-layout">
+        <form class="search-panel" method="get" data-reveal>
+            <div class="form-row">
+                <label for="q">Search books</label>
+                <input class="form-input" type="text" name="q" id="q" value="{{ query }}" placeholder="Ex: prayer, discipleship, grace">
+            </div>
+            <button class="button button-primary" type="submit">Search books</button>
+        </form>
+
+        <div>
+            {% if service_note %}
+                <div class="message info" data-reveal>
+                    {{ service_note }}
+                </div>
+            {% endif %}
+
+            {% if books %}
+                <p class="result-tag" data-reveal>Showing {{ books|length }} of {{ total_matches }} books</p>
+                <div class="books-grid">
+                    {% for book in books %}
+                        <article class="result-card book-card" data-reveal>
+                            {% if book.thumbnail %}
+                                <img class="book-cover" src="{{ book.thumbnail }}" alt="{{ book.title }} cover">
+                            {% else %}
+                                <div class="book-cover-placeholder">No Cover</div>
+                            {% endif %}
+                            <h3>{{ book.title }}</h3>
+                            {% if book.authors %}
+                                <p><strong>Author(s):</strong> {{ book.authors }}</p>
+                            {% endif %}
+                            {% if book.published_date %}
+                                <p><strong>Published:</strong> {{ book.published_date }}</p>
+                            {% endif %}
+                            {% if book.page_count %}
+                                <p><strong>Pages:</strong> {{ book.page_count }}</p>
+                            {% endif %}
+                            {% if book.description %}
+                                <p>{{ book.description|truncatechars:240 }}</p>
+                            {% endif %}
+                            {% if book.info_link %}
+                                <a class="button button-secondary" href="{{ book.info_link }}" target="_blank" rel="noopener noreferrer">Read details</a>
+                            {% endif %}
+                        </article>
+                    {% endfor %}
+                </div>
+
+                {% if page_obj.paginator.num_pages > 1 %}
+                    <nav class="pagination" aria-label="Books pagination" data-reveal>
+                        {% if page_obj.has_previous %}
+                            <a class="button button-secondary" href="{{ request.path }}?q={{ query|urlencode }}&page={{ page_obj.previous_page_number }}">Previous</a>
+                        {% endif %}
+                        <div class="pagination-center">
+                            {% for link in pagination_links %}
+                                {% if link.type == 'ellipsis' %}
+                                    <span class="pagination-ellipsis" aria-hidden="true">...</span>
+                                {% else %}
+                                    <a
+                                        class="pagination-number{% if link.active %} pagination-number-active{% endif %}"
+                                        href="{{ request.path }}?q={{ query|urlencode }}&page={{ link.number }}"
+                                        {% if link.active %}aria-current="page"{% endif %}
+                                    >{{ link.number }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% if page_obj.has_next %}
+                            <a class="button button-secondary" href="{{ request.path }}?q={{ query|urlencode }}&page={{ page_obj.next_page_number }}">Next</a>
+                        {% endif %}
+                    </nav>
+                {% endif %}
+            {% else %}
+                <div class="empty-state" data-reveal>
+                    <h2>No books matched your search</h2>
+                    <p>Try a broader keyword like faith, worship, prayer, church history, or discipleship.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

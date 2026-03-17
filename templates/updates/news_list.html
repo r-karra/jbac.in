@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}JBAC | News{% endblock %}
+{% block title %}JBAC | వార్తలు{% endblock %}
 
 {% block content %}
 <section class="page-hero page-hero-tight">
     <div class="container" data-reveal>
-        <p class="eyebrow">News</p>
-        <h1>Council announcements and community updates</h1>
-        <p class="hero-text">Publish important notices, upcoming events, and ministry messages for the wider JBAC community.</p>
+        <p class="eyebrow">వార్తలు</p>
+        <h1>కౌన్సిల్ ప్రకటనలు మరియు సమాజ అప్డేట్లు</h1>
+        <p class="hero-text">విస్తృత JBAC సమాజం కోసం ముఖ్య నోటీసులు, రాబోయే కార్యక్రమాలు, సేవా సందేశాలను ప్రచురించండి.</p>
     </div>
 </section>
 
@@ -18,12 +18,12 @@
                 <p class="news-date">{{ article.published_at|date:'d M Y' }}</p>
                 <h2>{{ article.title }}</h2>
                 <p>{{ article.summary|default:article.content|truncatechars:180 }}</p>
-                <a href="{% url 'updates:detail' article.slug %}">Read full article</a>
+                <a href="{% url 'updates:detail' article.slug %}">పూర్తి వ్యాసం చదవండి</a>
             </article>
         {% empty %}
             <div class="empty-state" data-reveal>
-                <h2>No news published yet</h2>
-                <p>Add the first announcement through the admin dashboard.</p>
+                <h2>ఇప్పటికీ వార్తలు ప్రచురించబడలేదు</h2>
+                <p>మొదటి ప్రకటనను నిర్వాహక డాష్‌బోర్డ్ ద్వారా జోడించండి.</p>
             </div>
         {% endfor %}
     </div>

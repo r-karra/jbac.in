@@ -1,33 +1,33 @@
 {% extends 'base.html' %}
 
-{% block title %}JBAC | Login{% endblock %}
+{% block title %}JBAC | ప్రవేశం{% endblock %}
 
 {% block content %}
 <section class="page-hero page-hero-tight">
     <div class="container" data-reveal>
-        <p class="eyebrow">Login / ప్రవేశం</p>
-        <h1>Access your council dashboard</h1>
-        <p class="hero-text">Choose your category, then sign in using your mobile number or email and password.</p>
+        <p class="eyebrow">ప్రవేశం</p>
+        <h1>మీ కౌన్సిల్ డాష్‌బోర్డ్‌లోకి ప్రవేశించండి</h1>
+        <p class="hero-text">మీ విభాగాన్ని ఎంచుకుని, మొబైల్ నంబర్ లేదా ఇమెయిల్ మరియు పాస్‌వర్డ్‌తో ప్రవేశించండి.</p>
     </div>
 </section>
 
 <section class="section-shell">
     <div class="container auth-grid">
         <div class="info-card" data-reveal>
-            <h2>Who can log in?</h2>
+            <h2>ఎవరు ప్రవేశించవచ్చు?</h2>
             <ul class="check-list">
-                <li>Believer</li>
-                <li>Pastor</li>
-                <li>Student</li>
-                <li>Pastor Association</li>
-                <li>Ministries</li>
-                <li>Church</li>
-                <li>Christian Organization / Company</li>
+                <li>విశ్వాసి</li>
+                <li>పాస్టర్</li>
+                <li>విద్యార్థి</li>
+                <li>పాస్టర్స్ అసోసియేషన్</li>
+                <li>మినిస్ట్రీలు</li>
+                <li>చర్చి</li>
+                <li>క్రైస్తవ సంస్థ / కంపెనీ</li>
             </ul>
         </div>
         <form class="form-card" method="post" data-reveal>
             {% csrf_token %}
-            <h2>Sign in</h2>
+            <h2>ప్రవేశం</h2>
             {% if form.non_field_errors %}
                 <div class="form-errors">{{ form.non_field_errors }}</div>
             {% endif %}
@@ -40,9 +40,9 @@
                     {% endif %}
                 </div>
             {% endfor %}
-            <button class="button button-primary" type="submit">Login</button>
-            <a class="button button-secondary" href="{% url 'accounts:otp-request' %}">Login with OTP</a>
-            <p class="muted">Need a new account? Use the registration center to create the correct profile first.</p>
+            <button class="button button-primary" type="submit">ప్రవేశించండి</button>
+            <a class="button button-secondary" href="{% url 'accounts:otp-request' %}">OTPతో ప్రవేశించండి</a>
+            <p class="muted">కొత్త ఖాతా కావాలా? ముందుగా రిజిస్ట్రేషన్ సెంటర్‌లో సరైన ప్రొఫైల్ సృష్టించండి.</p>
         </form>
     </div>
 </section>

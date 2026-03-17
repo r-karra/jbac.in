@@ -21,9 +21,9 @@ class StyledFormMixin:
 
 
 class LoginForm(StyledFormMixin, forms.Form):
-    role = forms.ChoiceField(choices=User.Role.choices, label="Category")
-    identifier = forms.CharField(label="Mobile number or email")
-    password = forms.CharField(widget=forms.PasswordInput, label="Password")
+    role = forms.ChoiceField(choices=User.Role.choices, label="విభాగం")
+    identifier = forms.CharField(label="మొబైల్ నంబర్ లేదా ఇమెయిల్")
+    password = forms.CharField(widget=forms.PasswordInput, label="పాస్‌వర్డ్")
 
     def __init__(self, *args, request=None, **kwargs):
         self.request = request
@@ -45,7 +45,7 @@ class LoginForm(StyledFormMixin, forms.Form):
             role=role,
         )
         if self.user is None:
-            raise forms.ValidationError("Invalid login details for the selected category.")
+            raise forms.ValidationError("ఎంచుకున్న విభాగానికి సంబంధించిన ప్రవేశ వివరాలు సరైనవి కావు.")
 
         return cleaned_data
 
@@ -54,8 +54,8 @@ class LoginForm(StyledFormMixin, forms.Form):
 
 
 class OTPRequestForm(StyledFormMixin, forms.Form):
-    role = forms.ChoiceField(choices=User.Role.choices, label="Category")
-    identifier = forms.CharField(label="Mobile number or email")
+    role = forms.ChoiceField(choices=User.Role.choices, label="విభాగం")
+    identifier = forms.CharField(label="మొబైల్ నంబర్ లేదా ఇమెయిల్")
 
     def clean(self):
         cleaned_data = super().clean()
@@ -70,7 +70,7 @@ class OTPRequestForm(StyledFormMixin, forms.Form):
             .first()
         )
         if not self.user:
-            raise forms.ValidationError("No account found for this identifier in the selected category.")
+            raise forms.ValidationError("ఎంచుకున్న విభాగంలో ఈ గుర్తింపుకు ఖాతా కనబడలేదు.")
         return cleaned_data
 
     def get_user(self):
@@ -78,4 +78,4 @@ class OTPRequestForm(StyledFormMixin, forms.Form):
 
 
 class OTPVerifyForm(StyledFormMixin, forms.Form):
-    code = forms.CharField(min_length=6, max_length=6, label="One-time password (OTP)")
+    code = forms.CharField(min_length=6, max_length=6, label="ఒకసారి ఉపయోగించే పాస్‌వర్డ్ (OTP)")

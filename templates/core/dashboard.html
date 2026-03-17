@@ -1,45 +1,45 @@
 {% extends 'base.html' %}
 
-{% block title %}JBAC | Dashboard{% endblock %}
+{% block title %}JBAC | డాష్‌బోర్డ్{% endblock %}
 
 {% block content %}
 <section class="page-hero page-hero-tight">
     <div class="container" data-reveal>
-        <p class="eyebrow">Dashboard</p>
-        <h1>Welcome, {{ user.display_name }}</h1>
-        <p class="hero-text">Manage your profile, check approval status, and move to the right part of the council portal.</p>
+        <p class="eyebrow">డాష్‌బోర్డ్</p>
+        <h1>స్వాగతం, {{ user.display_name }}</h1>
+        <p class="hero-text">మీ ప్రొఫైల్ నిర్వహించండి, ఆమోద స్థితిని చూడండి, కౌన్సిల్ పోర్టల్‌లో సరైన విభాగానికి వెళ్లండి.</p>
     </div>
 </section>
 
 <section class="section-shell">
     <div class="container dashboard-grid">
         <article class="info-card" data-reveal>
-            <h2>Account</h2>
-            <p><strong>Category:</strong> {{ user.get_role_display }}</p>
-            <p><strong>Mobile:</strong> {{ user.mobile_number }}</p>
-            <p><strong>Email:</strong> {{ user.email|default:'Not provided' }}</p>
-            <p><strong>Language:</strong> {{ user.get_preferred_language_display }}</p>
+            <h2>ఖాతా</h2>
+            <p><strong>విభాగం:</strong> {{ user.get_role_display }}</p>
+            <p><strong>మొబైల్:</strong> {{ user.mobile_number }}</p>
+            <p><strong>ఇమెయిల్:</strong> {{ user.email|default:'ఇవ్వలేదు' }}</p>
+            <p><strong>భాష:</strong> {{ user.get_preferred_language_display }}</p>
         </article>
         <article class="info-card" data-reveal>
-            <h2>Profile Status</h2>
+            <h2>ప్రొఫైల్ స్థితి</h2>
             {% if profile %}
-                <p><strong>Approved:</strong> {{ profile.is_approved|yesno:'Yes,No' }}</p>
-                <p><strong>Visible in search:</strong> {{ profile.is_public|yesno:'Yes,No' }}</p>
-                <p><strong>Last updated:</strong> {{ profile.updated_at|date:'d M Y, h:i A' }}</p>
+                <p><strong>ఆమోదం:</strong> {{ profile.is_approved|yesno:'అవును,కాదు' }}</p>
+                <p><strong>శోధనలో కనిపించుట:</strong> {{ profile.is_public|yesno:'అవును,కాదు' }}</p>
+                <p><strong>చివరిసారి నవీకరణ:</strong> {{ profile.updated_at|date:'d M Y, h:i A' }}</p>
             {% else %}
-                <p>Your account is active, but no linked registration profile was found for this role.</p>
+                <p>మీ ఖాతా యాక్టివ్‌లో ఉంది, కానీ ఈ విభాగానికి సంబంధించిన నమోదు ప్రొఫైల్ కనిపించలేదు.</p>
             {% endif %}
         </article>
         <article class="info-card" data-reveal>
-            <h2>Next Actions</h2>
+            <h2>తదుపరి చర్యలు</h2>
             <div class="button-column">
-                <a class="button button-primary" href="{% url 'directory:search' %}">Browse directory</a>
-                <a class="button button-secondary" href="{% url 'directory:member-id' %}">Download Member ID (PDF)</a>
-                <a class="button button-secondary" href="{% url 'directory:map-search' %}">District map search</a>
-                <a class="button button-secondary" href="{% url 'updates:list' %}">Read updates</a>
-                <a class="button button-secondary" href="{% url 'core:contact' %}">Contact JBAC</a>
+                <a class="button button-primary" href="{% url 'directory:search' %}">డైరెక్టరీ చూడండి</a>
+                <a class="button button-secondary" href="{% url 'directory:member-id' %}">సభ్య గుర్తింపు పత్రం (PDF) డౌన్‌లోడ్</a>
+                <a class="button button-secondary" href="{% url 'directory:map-search' %}">జిల్లా మ్యాప్ శోధన</a>
+                <a class="button button-secondary" href="{% url 'updates:list' %}">అప్డేట్లు చదవండి</a>
+                <a class="button button-secondary" href="{% url 'core:contact' %}">JBAC సంప్రదించండి</a>
                 {% if user.is_staff %}
-                    <a class="button button-secondary" href="{% url 'core:admin-dashboard' %}">Open admin dashboard</a>
+                    <a class="button button-secondary" href="{% url 'core:admin-dashboard' %}">నిర్వాహక డాష్‌బోర్డ్ తెరవండి</a>
                 {% endif %}
             </div>
         </article>

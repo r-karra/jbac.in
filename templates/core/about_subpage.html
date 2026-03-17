@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
-{% block title %}JBAC | {% if section_data %}{{ section_data.title_en }}{% else %}About Us{% endif %}{% endblock %}
+{% block title %}JBAC | {% if section_data %}{{ section_data.title_te|default:section_data.title_en }}{% else %}మా గురించి{% endif %}{% endblock %}
 
 {% block content %}
 <section class="page-hero page-hero-tight">
     <div class="container" data-reveal>
-        <p class="eyebrow">About Us / మా గురించి</p>
+        <p class="eyebrow">మా గురించి</p>
         {% if section_data %}
-            <h1>About Us</h1>
-            <p class="hero-text">Viewing: {{ section_data.title_te }} | {{ section_data.title_en }}</p>
+            <h1>మా గురించి</h1>
+            <p class="hero-text">చూస్తున్నారు: {{ section_data.title_te|default:section_data.title_en }}</p>
         {% else %}
-            <h1>Select a submenu to view its content</h1>
-            <p class="hero-text">Admin-managed content will only appear after the user clicks the matching About Us submenu item.</p>
+            <h1>కంటెంట్ చూడటానికి సబ్‌మెను ఎంచుకోండి</h1>
+            <p class="hero-text">సంబంధిత మా గురించి సబ్‌మెను అంశాన్ని క్లిక్ చేసిన తరువాత మాత్రమే నిర్వహణ కంటెంట్ కనిపిస్తుంది.</p>
         {% endif %}
     </div>
 </section>
@@ -19,23 +19,23 @@
 <section class="section-shell">
     <div class="container about-layout">
         <aside class="about-menu-card" data-reveal>
-            <h2>About Us Menu</h2>
+            <h2>మా గురించి మెను</h2>
             <div class="about-link-list">
                 {% for item in menu_items %}
                     <a class="about-link{% if item.active %} active{% endif %}" href="{% url 'core:about-section' item.slug %}">
-                        {{ item.title_te }} | {{ item.title_en }}
+                        {{ item.title_te|default:item.title_en }}
                     </a>
                 {% endfor %}
-                <a class="about-link" href="{% url 'core:contact' %}">CONTACT US</a>
-                <a class="about-link" href="{% url 'core:home' %}">HOME</a>
+                <a class="about-link" href="{% url 'core:contact' %}">సంప్రదించండి</a>
+                <a class="about-link" href="{% url 'core:home' %}">హోమ్</a>
             </div>
         </aside>
         <article class="about-content-card" data-reveal>
             {% if has_selected_content %}
-                <h2>{{ section_data.title_en }}</h2>
+                <h2>{{ section_data.title_te|default:section_data.title_en }}</h2>
                 <p>{{ section_data.description }}</p>
                 {% if content_source == 'admin' %}
-                    <p class="muted">Content source: Admin-managed page content</p>
+                    <p class="muted">కంటెంట్ మూలం: నిర్వహణ విభాగం నిర్వహించిన పేజీ కంటెంట్</p>
                 {% endif %}
                 <ul class="check-list">
                     {% for point in section_data.points %}
@@ -45,18 +45,18 @@
 
                 {% if section == 'photo-gallery' %}
                     <div class="gallery-grid">
-                        <div class="gallery-tile">Community Event</div>
-                        <div class="gallery-tile">Prayer Gathering</div>
-                        <div class="gallery-tile">Youth Fellowship</div>
-                        <div class="gallery-tile">Church Outreach</div>
-                        <div class="gallery-tile">Pastor Training</div>
-                        <div class="gallery-tile">Family Meeting</div>
+                        <div class="gallery-tile">సమాజ కార్యక్రమం</div>
+                        <div class="gallery-tile">ప్రార్థన సమావేశం</div>
+                        <div class="gallery-tile">యూత్ సహవాసం</div>
+                        <div class="gallery-tile">చర్చి అవుట్‌రీచ్</div>
+                        <div class="gallery-tile">పాస్టర్ శిక్షణ</div>
+                        <div class="gallery-tile">కుటుంబ సమావేశం</div>
                     </div>
                 {% endif %}
             {% else %}
-                <h2>No submenu content selected</h2>
-                <p>Choose one submenu item from the left to view the content uploaded for that specific section.</p>
-                <p class="muted">Content from one submenu will not be shown until that exact submenu is clicked.</p>
+                <h2>ఎటువంటి సబ్‌మెను కంటెంట్ ఎంపిక కాలేదు</h2>
+                <p>ఆ విభాగానికి సంబంధించిన కంటెంట్ చూడటానికి ఎడమ వైపు నుండి ఒక సబ్‌మెను అంశాన్ని ఎంచుకోండి.</p>
+                <p class="muted">ఆ సబ్‌మెను క్లిక్ చేసే వరకు ఆ విభాగపు కంటెంట్ చూపబడదు.</p>
             {% endif %}
         </article>
     </div>

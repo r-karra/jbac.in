@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}JBAC | District Map Search{% endblock %}
+{% block title %}JBAC | జిల్లా మ్యాప్ శోధన{% endblock %}
 
 {% block extra_head %}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
@@ -9,9 +9,9 @@
 {% block content %}
 <section class="page-hero page-hero-tight">
     <div class="container" data-reveal>
-        <p class="eyebrow">District Map Search</p>
-        <h1>Find churches by district on map</h1>
-        <p class="hero-text">This map shows approved and public church records with location coordinates.</p>
+        <p class="eyebrow">జిల్లా మ్యాప్ శోధన</p>
+        <h1>మ్యాప్‌లో జిల్లా వారీగా చర్చిలను కనుగొనండి</h1>
+        <p class="hero-text">ఈ మ్యాప్‌లో స్థాన నిర్దేశాంకాలతో ఆమోదిత ప్రజా చర్చి రికార్డులు కనిపిస్తాయి.</p>
     </div>
 </section>
 
@@ -19,28 +19,28 @@
     <div class="container search-layout">
         <form class="search-panel" method="get" data-reveal>
             <div class="form-row">
-                <label for="district">District</label>
+                <label for="district">జిల్లా</label>
                 <select class="form-select" name="district" id="district">
-                    <option value="">All districts</option>
+                    <option value="">అన్ని జిల్లాలు</option>
                     {% for value, label in district_choices %}
                         <option value="{{ value }}" {% if district == value %}selected{% endif %}>{{ label }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="form-row">
-                <label for="state">State</label>
+                <label for="state">రాష్ట్రం</label>
                 <select class="form-select" name="state" id="state">
-                    <option value="">All states</option>
+                    <option value="">అన్ని రాష్ట్రాలు</option>
                     {% for value, label in state_choices %}
                         <option value="{{ value }}" {% if state == value %}selected{% endif %}>{{ label }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <button class="button button-primary" type="submit">Apply map filters</button>
+            <button class="button button-primary" type="submit">మ్యాప్ ఫిల్టర్లు అమలు చేయండి</button>
         </form>
         <div data-reveal>
             <div id="district-map" class="map-shell"></div>
-            <p class="map-note">Records shown: {{ markers|length }}</p>
+            <p class="map-note">చూపిస్తున్న రికార్డులు: {{ markers|length }}</p>
         </div>
     </div>
 </section>
@@ -65,7 +65,7 @@
             if (item.lat && item.lng) {
                 L.marker([item.lat, item.lng])
                     .addTo(map)
-                    .bindPopup(`<strong>${item.name}</strong><br/>Pastor: ${item.pastor}<br/>${item.district}, ${item.state}`);
+                    .bindPopup(`<strong>${item.name}</strong><br/>పాస్టర్: ${item.pastor}<br/>${item.district}, ${item.state}`);
             }
         });
     </script>

@@ -1,81 +1,72 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}JBAC | Home{% endblock %}
+{% block title %}JBAC | హోమ్{% endblock %}
 
 {% block content %}
-<section class="hero-section">
-    <div class="container hero-grid">
-        <div class="hero-copy" data-reveal>
-            <p class="eyebrow">JBAC Digital Council</p>
-            <h1>Register believers, connect churches, and publish trusted updates in one bilingual platform.</h1>
-            <p class="hero-text">JBAC helps the Christian community across Andhra Pradesh maintain a secure directory, support pastoral search, collect registrations, and share news in English and Telugu.</p>
+<section class="starter-hero" data-reveal>
+    <div class="container starter-hero-inner">
+        <div class="starter-hero-copy">
+            <h1>JBACకు స్వాగతం</h1>
+            <p>క్రైస్తవ సహవాసం, నమ్మకమైన డైరెక్టరీ ప్రాప్తి, సురక్షిత నమోదు, సేవా సమన్వయం కోసం ఒక వేదిక.</p>
             <div class="hero-actions">
-                <a class="button button-primary" href="{% url 'directory:register' %}">Start Registration</a>
-                <a class="button button-secondary" href="{% url 'directory:search' %}">Search Directory</a>
-            </div>
-            <div class="pill-row">
-                <span>Believers / విశ్వాసులు</span>
-                <span>Pastors / పాస్టర్లు</span>
-                <span>Students / విద్యార్థులు</span>
-                <span>Churches / చర్చిలు</span>
-                <span>Organizations / సంస్థలు</span>
-            </div>
-        </div>
-        <div class="hero-panel" data-reveal>
-            <div class="panel-card panel-card-accent">
-                <p class="panel-label">Confidentiality Notice</p>
-                <h2>Member details stay protected until approved for public search.</h2>
-                <p>Profiles can be reviewed in admin before they appear in the public church or pastor directory.</p>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <strong>{{ stats.believers }}</strong>
-                    <span>Believer records</span>
-                </div>
-                <div class="stat-card">
-                    <strong>{{ stats.pastors }}</strong>
-                    <span>Pastor profiles</span>
-                </div>
-                <div class="stat-card">
-                    <strong>{{ stats.students }}</strong>
-                    <span>Student profiles</span>
-                </div>
-                <div class="stat-card">
-                    <strong>{{ stats.churches }}</strong>
-                    <span>Church registrations</span>
-                </div>
-                <div class="stat-card stat-card-wide">
-                    <strong>{{ stats.organizations }}</strong>
-                    <span>Organizations and ministries</span>
-                </div>
+                <a class="button button-primary" href="{% url 'directory:register' %}">నమోదు ప్రారంభించండి</a>
+                <a class="button button-secondary starter-hero-outline" href="{% url 'updates:list' %}">అప్డేట్లు చదవండి</a>
             </div>
         </div>
     </div>
 </section>
 
-<section class="section-shell">
-    <div class="container">
-        <div class="section-heading" data-reveal>
-            <p class="eyebrow">Core Modules</p>
-            <h2>Built around registration, search, updates, and council administration.</h2>
+<section class="starter-sunday section-shell">
+    <div class="container" data-reveal>
+        <div class="section-heading starter-center">
+            <h2>ఈ వారం సమాజంతో కలవండి</h2>
+            <p class="hero-text">ధృవీకరించిన సేవా వివరాలు, రాబోయే సమావేశాల అప్డేట్లు, క్రైస్తవ వనరులు ఒకే వేదికలో పొందండి.</p>
         </div>
-        <div class="feature-grid">
+        <div class="starter-service-grid">
+            <article class="starter-service-card">
+                <h3>డైరెక్టరీ ప్రాప్తి</h3>
+                <p class="starter-time">{{ stats.pastors|default:0 }} పాస్టర్లు</p>
+                <p>జిల్లా, గ్రామం, రాష్ట్రం ఆధారంగా ఆమోదించిన పాస్టర్ మరియు చర్చి వివరాలను కనుగొనండి.</p>
+                <a class="button button-secondary" href="{% url 'directory:search' %}">డైరెక్టరీ తెరవండి</a>
+            </article>
+            <article class="starter-service-card">
+                <h3>సమాజ అప్డేట్లు</h3>
+                <p class="starter-time">{{ latest_articles|length }} వార్తలు</p>
+                <p>JBAC నిర్వహణ బృందం ప్రచురించే ప్రకటనలు, కౌన్సిల్ నోటీసులతో అప్‌డేట్‌గా ఉండండి.</p>
+                <a class="button button-secondary" href="{% url 'updates:list' %}">వార్తలు చూడండి</a>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container starter-about-grid">
+        <div class="starter-about-image" data-reveal>
+            <img src="{% static 'images/template/church-default.webp' %}" alt="JBAC సమాజం">
+        </div>
+        <div data-reveal>
+            <p class="eyebrow">ప్రధాన విభాగాలు</p>
+            <h2>నమోదు నుంచి సేవా విస్తరణ వరకు సమన్వయానికి రూపొందించబడింది.</h2>
+            <p class="hero-text">గోప్యతను కాపాడే డిజిటల్ వేదిక ద్వారా ఆంధ్రప్రదేశ్ అంతటా విశ్వాసులు, పాస్టర్లు, చర్చిలు, విద్యార్థులు, సంస్థలను JBAC అనుసంధానిస్తుంది.</p>
+            <div class="feature-grid">
             <article class="feature-card" data-reveal>
-                <h3>Multi-role onboarding</h3>
-                <p>Separate registration flows for believers, pastors, students, churches, and organizations with secure login by category.</p>
+                <h3>బహుళ విభాగ నమోదు</h3>
+                <p>విభాగాల వారీగా సురక్షిత ప్రవేశంతో విశ్వాసులు, పాస్టర్లు, విద్యార్థులు, చర్చిలు, సంస్థలకు వేర్వేరు నమోదు విధానం.</p>
             </article>
             <article class="feature-card" data-reveal>
-                <h3>Directory search</h3>
-                <p>Filter church and pastor listings by district, state, and search term once the records are approved for public access.</p>
+                <h3>డైరెక్టరీ శోధన</h3>
+                <p>ప్రజా ప్రదర్శనకు ఆమోదించిన తర్వాత, చర్చి మరియు పాస్టర్ వివరాలను జిల్లా, రాష్ట్రం, శోధన పదంతో ఫిల్టర్ చేయండి.</p>
             </article>
             <article class="feature-card" data-reveal>
-                <h3>News publishing</h3>
-                <p>Share community announcements, ministry updates, and important notices from a manageable admin console.</p>
+                <h3>వార్తల ప్రచురణ</h3>
+                <p>నిర్వహించడానికి సులభమైన నిర్వహణ కన్సోల్ ద్వారా సమాజ ప్రకటనలు, సేవా అప్డేట్లు, ముఖ్య నోటీసులు పంచుకోండి.</p>
             </article>
             <article class="feature-card" data-reveal>
-                <h3>Admin control</h3>
-                <p>Use Django admin to review registrations, approve directory visibility, and maintain content quality.</p>
+                <h3>నిర్వాహక నియంత్రణ</h3>
+                <p>Django నిర్వహణ విభాగం ద్వారా నమోదులను పరిశీలించండి, డైరెక్టరీ ప్రదర్శనకు ఆమోదం ఇవ్వండి, కంటెంట్ నాణ్యతను కాపాడండి.</p>
             </article>
+            </div>
         </div>
     </div>
 </section>
@@ -83,28 +74,28 @@
 <section class="section-shell section-contrast">
     <div class="container split-layout">
         <div data-reveal>
-            <p class="eyebrow">Why JBAC</p>
-            <h2>Designed for community coordination, not just form collection.</h2>
-            <p>This site combines registration management with a trusted ministry directory and an update stream for the Christian community.</p>
+            <p class="eyebrow">ఎందుకు JBAC</p>
+            <h2>డేటా సేకరణకే కాదు, సమాజాలను నడిపించడానికి నిర్మించబడింది.</h2>
+            <p>సురక్షిత రికార్డులతో పాటు చర్చిలు, మినిస్ట్రీలు వ్యక్తులు, సమాచార వినిమయం, సేవను సమన్వయపరచేందుకు అవసరమైన ప్రాయోగిక సాధనాలను ఈ వేదిక అందిస్తుంది.</p>
             <ul class="check-list">
-                <li>Role-based logins for each community category</li>
-                <li>Public search only for approved directory records</li>
-                <li>Responsive layout for mobile and desktop users</li>
-                <li>Bilingual copy throughout the core interface</li>
+                <li>ప్రతి విభాగానికి పాత్ర ఆధారిత ప్రవేశం</li>
+                <li>ఆమోదించిన డైరెక్టరీ రికార్డులకే ప్రజా శోధన</li>
+                <li>మొబైల్ మరియు డెస్క్‌టాప్‌కు అనుగుణమైన రూపకల్పన</li>
+                <li>కోర్ ఇంటర్‌ఫేస్ అంతటా తెలుగు ప్రాధాన్యం</li>
             </ul>
         </div>
         <div class="timeline-card" data-reveal>
             <div>
                 <span>01</span>
-                <p>Register an individual, church, or ministry profile.</p>
+                <p>వ్యక్తిగత, చర్చి లేదా మినిస్ట్రీ ప్రొఫైల్‌ను నమోదు చేయండి.</p>
             </div>
             <div>
                 <span>02</span>
-                <p>Review and approve records through the admin dashboard.</p>
+                <p>నిర్వాహక డాష్‌బోర్డ్ ద్వారా రికార్డులను పరిశీలించి ఆమోదించండి.</p>
             </div>
             <div>
                 <span>03</span>
-                <p>Publish directory results and council news for the community.</p>
+                <p>సమాజం కోసం డైరెక్టరీ ఫలితాలు మరియు కౌన్సిల్ వార్తలను ప్రచురించండి.</p>
             </div>
         </div>
     </div>
@@ -113,8 +104,8 @@
 <section class="section-shell">
     <div class="container">
         <div class="section-heading" data-reveal>
-            <p class="eyebrow">Latest Updates</p>
-            <h2>News and announcements</h2>
+            <p class="eyebrow">తాజా అప్డేట్లు</p>
+            <h2>వార్తలు మరియు ప్రకటనలు</h2>
         </div>
         <div class="news-grid">
             {% for article in featured_articles|default:latest_articles %}
@@ -122,16 +113,27 @@
                     <p class="news-date">{{ article.published_at|date:'d M Y' }}</p>
                     <h3>{{ article.title }}</h3>
                     <p>{{ article.summary|default:article.content|truncatechars:140 }}</p>
-                    <a href="{% url 'updates:detail' article.slug %}">Read update</a>
+                    <a href="{% url 'updates:detail' article.slug %}">మరింత చదవండి</a>
                 </article>
             {% empty %}
                 <article class="news-card" data-reveal>
-                    <p class="news-date">Admin ready</p>
-                    <h3>No published updates yet</h3>
-                    <p>Use the admin console to add the first JBAC announcement and it will appear here automatically.</p>
-                    <a href="{% url 'updates:list' %}">Open news section</a>
+                    <p class="news-date">నిర్వాహక విభాగం సిద్ధంగా ఉంది</p>
+                    <h3>ఇప్పటికీ ప్రచురిత అప్డేట్లు లేవు</h3>
+                    <p>మొదటి JBAC ప్రకటనను నిర్వహణ కన్సోల్‌లో జోడించండి. అది ఇక్కడ ఆటోమేటిక్‌గా కనిపిస్తుంది.</p>
+                    <a href="{% url 'updates:list' %}">వార్తల విభాగం తెరవండి</a>
                 </article>
             {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="starter-cta" data-reveal>
+    <div class="container starter-center">
+        <h2>JBAC నెట్‌వర్క్‌తో కలవడానికి సిద్ధమా?</h2>
+        <p class="hero-text">విశ్వాసి, పాస్టర్, చర్చి, విద్యార్థి లేదా మినిస్ట్రీగా చేరి నమ్మకమైన రికార్డులతో సమాజానికి సేవ చేయడం ప్రారంభించండి.</p>
+        <div class="hero-actions">
+            <a class="button button-primary" href="{% url 'directory:register' %}">నేను కొత్తవాడిని</a>
+            <a class="button button-secondary starter-hero-outline" href="{% url 'core:contact' %}">మమ్మల్ని సంప్రదించండి</a>
         </div>
     </div>
 </section>

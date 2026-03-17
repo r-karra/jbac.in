@@ -1,29 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title %}JBAC | OTP Login{% endblock %}
+{% block title %}JBAC | OTP ప్రవేశం{% endblock %}
 
 {% block content %}
 <section class="page-hero page-hero-tight">
     <div class="container" data-reveal>
-        <p class="eyebrow">OTP Login</p>
-        <h1>Get one-time password access</h1>
-        <p class="hero-text">Select category and account identifier to request a time-bound OTP code.</p>
+        <p class="eyebrow">OTP ప్రవేశం</p>
+        <h1>ఒకసారి ఉపయోగించే పాస్‌వర్డ్ ద్వారా ప్రవేశం పొందండి</h1>
+        <p class="hero-text">సమయ పరిమితి ఉన్న OTP సంకేతం కోసం మీ విభాగం మరియు ఖాతా గుర్తింపును ఎంచుకోండి.</p>
     </div>
 </section>
 
 <section class="section-shell">
     <div class="container auth-grid">
         <div class="info-card" data-reveal>
-            <h2>How it works</h2>
+            <h2>ఇది ఎలా పనిచేస్తుంది</h2>
             <ul class="check-list">
-                <li>OTP expires in 10 minutes.</li>
-                <li>Each code is single use.</li>
-                <li>In production, send OTP through SMS and email providers.</li>
+                <li>OTP 10 నిమిషాల్లో గడువు ముగుస్తుంది.</li>
+                <li>ప్రతి కోడ్ ఒక్కసారి మాత్రమే ఉపయోగించవచ్చు.</li>
+                <li>ప్రత్యక్ష వినియోగంలో OTPని సందేశం లేదా ఇమెయిల్ ద్వారా పంపాలి.</li>
             </ul>
         </div>
         <form class="form-card" method="post" data-reveal>
             {% csrf_token %}
-            <h2>Request OTP</h2>
+            <h2>OTP కోరండి</h2>
             {% if form.non_field_errors %}
                 <div class="form-errors">{{ form.non_field_errors }}</div>
             {% endif %}
@@ -36,8 +36,8 @@
                     {% endif %}
                 </div>
             {% endfor %}
-            <button class="button button-primary" type="submit">Send OTP</button>
-            <a class="button button-secondary" href="{% url 'accounts:login' %}">Back to password login</a>
+            <button class="button button-primary" type="submit">OTP పంపండి</button>
+            <a class="button button-secondary" href="{% url 'accounts:login' %}">పాస్‌వర్డ్ ప్రవేశానికి వెనుకకు వెళ్లండి</a>
         </form>
     </div>
 </section>

@@ -201,3 +201,128 @@ if (booksPage) {
             });
     }
 }
+
+const languageButtons = document.querySelectorAll('[data-lang]');
+
+const LANGUAGE_STORAGE_KEY = 'jbac-preferred-lang';
+const SOURCE_LANG = 'en';
+
+const setGoogleTranslateCookie = lang => {
+    const value = `/${SOURCE_LANG}/${lang}`;
+    document.cookie = `googtrans=${value}; path=/`;
+    document.cookie = `googtrans=${value}; path=/; domain=${window.location.hostname}`;
+};
+
+const refreshLanguageButtons = lang => {
+    languageButtons.forEach(button => {
+        button.classList.toggle('active', button.dataset.lang === lang);
+    });
+};
+
+const applyTranslateCombo = lang => {
+    const combo = document.querySelector('.goog-te-combo');
+    if (!combo) {
+        return false;
+    }
+    combo.value = lang;
+    combo.dispatchEvent(new Event('change'));
+    return true;
+};
+
+if (languageButtons.length) {
+    const defaultLang = 'te';
+    const preferredLang = localStorage.getItem(LANGUAGE_STORAGE_KEY) || defaultLang;
+
+    setGoogleTranslateCookie(preferredLang);
+    refreshLanguageButtons(preferredLang);
+
+    languageButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const nextLang = button.dataset.lang;
+            localStorage.setItem(LANGUAGE_STORAGE_KEY, nextLang);
+            setGoogleTranslateCookie(nextLang);
+            refreshLanguageButtons(nextLang);
+
+            if (!applyTranslateCombo(nextLang)) {
+                window.location.reload();
+            }
+        });
+    });
+
+    window.googleTranslateElementInit = () => {
+        if (!window.google || !window.google.translate) {
+            return;
+        }
+
+        new window.google.translate.TranslateElement(
+            {
+                pageLanguage: SOURCE_LANG,
+                includedLanguages: 'te,en',
+                autoDisplay: false,
+                multilanguagePage: true,
+            },
+            'google_translate_element'
+        );
+
+        let attempts = 0;
+        const maxAttempts = 20;
+        const applyPreferred = () => {
+            attempts += 1;
+            const done = applyTranslateCombo(preferredLang);
+            if (!done && attempts < maxAttempts) {
+                window.setTimeout(applyPreferred, 200);
+            }
+        };
+        applyPreferred();
+    };
+
+    const script = document.createElement('script');
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.async = true;
+    document.head.appendChild(script);
+}
+
+const normalizePath = value => {
+    const clean = (value || '/').split('?')[0].split('#')[0];
+    return clean.endsWith('/') ? clean : `${clean}/`;
+};
+
+const currentPath = normalizePath(window.location.pathname);
+const headerNav = document.querySelector('[data-menu]');
+
+if (headerNav) {
+    const navLinks = Array.from(headerNav.querySelectorAll('a[href]'));
+    let bestMatch = null;
+    let bestScore = -1;
+
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')) {
+            return;
+        }
+
+        const linkPath = normalizePath(href);
+        const isExact = currentPath === linkPath;
+        const isSection = linkPath !== '/' && currentPath.startsWith(linkPath);
+        if (!isExact && !isSection) {
+            return;
+        }
+
+        const score = isExact ? 1000 + linkPath.length : linkPath.length;
+        if (score > bestScore) {
+            bestMatch = link;
+            bestScore = score;
+        }
+    });
+
+    if (bestMatch) {
+        bestMatch.classList.add('nav-active');
+        const parentDropdown = bestMatch.closest('.nav-dropdown');
+        if (parentDropdown) {
+            const trigger = parentDropdown.querySelector('[data-nav-dropdown-trigger]');
+            if (trigger) {
+                trigger.classList.add('nav-active');
+            }
+        }
+    }
+}

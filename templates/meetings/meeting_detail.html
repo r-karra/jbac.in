@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
-{% block title %}JBAC | {{ meeting.title }}{% endblock %}
+{% block title %}JBAC | సమావేశ వివరాలు{% endblock %}
 
 {% block content %}
 <section class="page-hero page-hero-tight">
     <div class="container" data-reveal>
-        <p class="eyebrow">Meeting Details</p>
+        <p class="eyebrow">సమావేశ వివరాలు</p>
         <h1>{{ meeting.title }}</h1>
         <p class="hero-text">{{ meeting.start_date }} - {{ meeting.end_date }}</p>
-        <p><a class="button button-secondary" href="{% url 'meetings:view' %}">Back to meetings</a></p>
+        <p><a class="button button-secondary" href="{% url 'meetings:view' %}">సమావేశాలకు తిరిగి వెళ్ళండి</a></p>
     </div>
 </section>
 
@@ -16,44 +16,44 @@
     <div class="container split-layout">
         <article class="form-card" data-reveal>
             {% if meeting.poster %}
-                <img src="{{ meeting.poster.url }}" alt="{{ meeting.title }} poster" class="meeting-poster">
+                <img src="{{ meeting.poster.url }}" alt="{{ meeting.title }} పోస్టర్" class="meeting-poster">
             {% endif %}
 
-            <h2>Event Overview</h2>
+            <h2>కార్యక్రమ అవలోకనం</h2>
             <p>{{ meeting.description|linebreaksbr }}</p>
 
             {% if meeting.additional_info %}
-                <h3>Additional Information</h3>
+                <h3>అదనపు సమాచారం</h3>
                 <p>{{ meeting.additional_info|linebreaksbr }}</p>
             {% endif %}
         </article>
 
         <aside class="info-card" data-reveal>
-            <h2>Event Details</h2>
-            <p><strong>Organizer:</strong> {{ meeting.organizer_name }}</p>
-            <p><strong>Expected Attendance:</strong> {{ meeting.estimated_attendance }}</p>
-            <p><strong>Address:</strong> {{ meeting.address }}</p>
-            {% if meeting.village %}<p><strong>Village:</strong> {{ meeting.village }}</p>{% endif %}
-            {% if meeting.mandal %}<p><strong>Mandal:</strong> {{ meeting.mandal }}</p>{% endif %}
-            {% if meeting.city_area %}<p><strong>City / Area:</strong> {{ meeting.city_area }}</p>{% endif %}
-            <p><strong>District:</strong> {{ meeting.get_district_display }}</p>
-            <p><strong>State:</strong> {{ meeting.state }}</p>
+            <h2>కార్యక్రమ వివరాలు</h2>
+            <p><strong>నిర్వాహకుడు:</strong> {{ meeting.organizer_name }}</p>
+            <p><strong>అంచనా హాజరు:</strong> {{ meeting.estimated_attendance }}</p>
+            <p><strong>చిరునామా:</strong> {{ meeting.address }}</p>
+            {% if meeting.village %}<p><strong>గ్రామం:</strong> {{ meeting.village }}</p>{% endif %}
+            {% if meeting.mandal %}<p><strong>మండలం:</strong> {{ meeting.mandal }}</p>{% endif %}
+            {% if meeting.city_area %}<p><strong>నగరం / ప్రాంతం:</strong> {{ meeting.city_area }}</p>{% endif %}
+            <p><strong>జిల్లా:</strong> {{ meeting.get_district_display }}</p>
+            <p><strong>రాష్ట్రం:</strong> {{ meeting.state }}</p>
 
             {% if meeting.meeting_type %}
-                <p><strong>Meeting Type:</strong> {{ meeting.get_meeting_type_display }}</p>
+                <p><strong>సమావేశ రకం:</strong> {{ meeting.get_meeting_type_display }}</p>
             {% endif %}
             {% if meeting.denomination %}
-                <p><strong>Denomination:</strong> {{ meeting.get_denomination_display }}</p>
+                <p><strong>పంథా:</strong> {{ meeting.get_denomination_display }}</p>
             {% endif %}
             {% if meeting.ministry %}
-                <p><strong>Ministry:</strong> {{ meeting.get_ministry_display }}</p>
+                <p><strong>మినిస్ట్రీ:</strong> {{ meeting.get_ministry_display }}</p>
             {% endif %}
 
             {% if meeting.google_map_location %}
-                <p><a href="{{ meeting.google_map_location }}" target="_blank" rel="noopener">Open Google Map Location</a></p>
+                <p><a href="{{ meeting.google_map_location }}" target="_blank" rel="noopener">గూగుల్ మ్యాప్ స్థానం తెరవండి</a></p>
             {% endif %}
             {% if meeting.youtube_link %}
-                <p><a href="{{ meeting.youtube_link }}" target="_blank" rel="noopener">Open YouTube Link</a></p>
+                <p><a href="{{ meeting.youtube_link }}" target="_blank" rel="noopener">యూట్యూబ్ లింక్ తెరవండి</a></p>
             {% endif %}
         </aside>
     </div>

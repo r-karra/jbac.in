@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}JBAC | Song Lyrics{% endblock %}
+{% block title %}JBAC | పాట వివరాలు{% endblock %}
 
 {% block content %}
 <section class="page-hero page-hero-tight">
     <div class="container" data-reveal>
-        <p class="eyebrow">Song Detail</p>
+        <p class="eyebrow">పాట వివరాలు</p>
         <h1>{{ song.title }}</h1>
-        <p class="hero-text">Complete lyrics view for worship and fellowship use.</p>
+        <p class="hero-text">ఆరాధన మరియు సహవాస వినియోగం కోసం పూర్తి పాట సాహిత్యం.</p>
         <div class="hero-actions">
-            <a class="button button-secondary" href="{{ next_url }}">Back to songs</a>
+            <a class="button button-secondary" href="{{ next_url }}">పాటల జాబితాకు తిరిగి వెళ్ళండి</a>
         </div>
     </div>
 </section>
@@ -25,22 +25,22 @@
             <div class="inline-meta">
                 <span class="meta-pill">{{ song.category|title }}</span>
                 {% if song.song_number %}
-                    <span class="meta-pill">Song No: {{ song.song_number }}</span>
+                    <span class="meta-pill">పాట సంఖ్య: {{ song.song_number }}</span>
                 {% endif %}
                 {% if song.language %}
                     <span class="meta-pill">{{ song.language }}</span>
                 {% endif %}
             </div>
             {% if song.artist %}
-                <p><strong>Artist:</strong> {{ song.artist }}</p>
+                <p><strong>గాయకుడు:</strong> {{ song.artist }}</p>
             {% endif %}
             {% if song.romanized_title %}
-                <p><strong>Romanized Title:</strong> {{ song.romanized_title }}</p>
+                <p><strong>రోమనైజ్డ్ శీర్షిక:</strong> {{ song.romanized_title }}</p>
             {% endif %}
             <div class="song-full-lyrics">{{ song.lyrics|linebreaksbr }}</div>
             {% if song.song_url %}
                 <p>
-                    <a class="button button-secondary" href="{{ song.song_url }}" target="_blank" rel="noopener noreferrer">Open source song link</a>
+                    <a class="button button-secondary" href="{{ song.song_url }}" target="_blank" rel="noopener noreferrer">మూల పాట లింక్ తెరవండి</a>
                 </p>
             {% endif %}
         </article>

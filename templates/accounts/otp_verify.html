@@ -1,29 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title %}JBAC | Verify OTP{% endblock %}
+{% block title %}JBAC | OTP ధృవీకరణ{% endblock %}
 
 {% block content %}
 <section class="page-hero page-hero-tight">
     <div class="container" data-reveal>
-        <p class="eyebrow">Verify OTP</p>
-        <h1>Enter your one-time code</h1>
-        <p class="hero-text">Category: {{ challenge.get_role_display }} | Identifier: {{ challenge.identifier }}</p>
+        <p class="eyebrow">OTP ధృవీకరణ</p>
+        <h1>మీ OTP కోడ్ నమోదు చేయండి</h1>
+        <p class="hero-text">విభాగం: {{ challenge.get_role_display }} | గుర్తింపు: {{ challenge.identifier }}</p>
     </div>
 </section>
 
 <section class="section-shell">
     <div class="container auth-grid">
         <div class="info-card" data-reveal>
-            <h2>OTP Tips</h2>
+            <h2>OTP సూచనలు</h2>
             <ul class="check-list">
-                <li>Enter the 6-digit code exactly once.</li>
-                <li>Use request OTP again if code expires.</li>
-                <li>Do not share OTP with anyone.</li>
+                <li>6 అంకెల కోడ్‌ను సరియైన విధంగా నమోదు చేయండి.</li>
+                <li>కోడ్ గడువు ముగిస్తే మళ్లీ OTP కోరండి.</li>
+                <li>OTPని ఎవరితోనూ పంచుకోకండి.</li>
             </ul>
         </div>
         <form class="form-card" method="post" data-reveal>
             {% csrf_token %}
-            <h2>Verify and login</h2>
+            <h2>ధృవీకరించి ప్రవేశించండి</h2>
             {% if form.non_field_errors %}
                 <div class="form-errors">{{ form.non_field_errors }}</div>
             {% endif %}
@@ -36,8 +36,8 @@
                     {% endif %}
                 </div>
             {% endfor %}
-            <button class="button button-primary" type="submit">Verify OTP</button>
-            <a class="button button-secondary" href="{% url 'accounts:otp-request' %}">Request new OTP</a>
+            <button class="button button-primary" type="submit">OTP ధృవీకరించండి</button>
+            <a class="button button-secondary" href="{% url 'accounts:otp-request' %}">కొత్త OTP కోరండి</a>
         </form>
     </div>
 </section>

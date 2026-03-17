@@ -1,79 +1,77 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="te">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}JBAC | Jesus Believers Association Council{% endblock %}</title>
-    <meta name="description" content="JBAC is a bilingual community platform for believer registrations, pastor and church directory search, news, and council contact information.">
+    <title>{% block title %}JBAC | జీసస్ బిలీవర్స్ అసోసియేషన్ కౌన్సిల్{% endblock %}</title>
+    <meta name="description" content="JBAC విశ్వాసుల నమోదులు, పాస్టర్ మరియు చర్చి డైరెక్టరీ శోధన, వార్తలు, మరియు కౌన్సిల్ సంప్రదింపు సమాచారం కోసం ద్విభాషా సమాజ వేదిక.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+Telugu:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/site.css' %}">
     {% block extra_head %}{% endblock %}
 </head>
 <body>
-    <div class="announcement-bar">
-        <div class="container announcement-inner">
-            <span>Confidential registration for believers across Andhra Pradesh.</span>
-            <span>ఆంధ్రప్రదేశ్ విశ్వాసుల కోసం గోప్యమైన నమోదు సేవలు.</span>
-        </div>
-    </div>
     <header class="site-header">
         <div class="container nav-shell">
             <a class="brand" href="{% url 'core:home' %}">
-                <span class="brand-mark">JBAC</span>
-                <span class="brand-copy">Jesus Believers Association Council</span>
+                <span class="brand-mark" aria-hidden="true">
+                    <svg viewBox="0 0 640 512" role="img" aria-label="Church icon">
+                        <path fill="currentColor" d="M344 24c0-13.3-10.7-24-24-24s-24 10.7-24 24l0 24-32 0c-13.3 0-24 10.7-24 24s10.7 24 24 24l32 0 0 46.4L183.3 210c-14.5 8.7-23.3 24.3-23.3 41.2L160 512l96 0 0-96c0-35.3 28.7-64 64-64s64 28.7 64 64l0 96 96 0 0-260.8c0-16.9-8.8-32.5-23.3-41.2L344 142.4 344 96l32 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-32 0 0-24zM24.9 330.3C9.5 338.8 0 354.9 0 372.4L0 464c0 26.5 21.5 48 48 48l80 0 0-238.4L24.9 330.3zM592 512c26.5 0 48-21.5 48-48l0-91.6c0-17.5-9.5-33.6-24.9-42.1L512 273.6 512 512l80 0z"/>
+                    </svg>
+                </span>
+                <span class="brand-copy">జీసస్ బిలీవర్స్ అసోసియేషన్ కౌన్సిల్</span>
             </a>
             <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-menu-toggle>
-                Menu
+                మెను
             </button>
             <nav class="site-nav" id="site-navigation" data-menu>
-                <a href="{% url 'core:home' %}">Home / హోమ్</a>
+                <a href="{% url 'core:home' %}">హోమ్</a>
                 <div class="nav-dropdown">
-                    <a class="nav-dropdown-trigger" data-nav-dropdown-trigger aria-expanded="false" href="{% url 'core:about-us' %}">About Us / మా గురించి</a>
+                    <a class="nav-dropdown-trigger" data-nav-dropdown-trigger aria-expanded="false" href="{% url 'core:about-us' %}">మా గురించి</a>
                     <div class="submenu-panel">
-                        <a href="{% url 'core:about-section' 'about-us' %}">మా గురించి | About Us</a>
-                        <a href="{% url 'core:about-section' 'our-help' %}">మీకు మా సహాయం | Our Help</a>
-                        <a href="{% url 'core:about-section' 'how-to-use' %}">వెబ్ సైట్ ఎలా ఉపయోగించాలి | How to Use the Website</a>
-                        <a href="{% url 'core:about-section' 'pastor-guidance-articles' %}">చర్చి పాస్టర్ గైడెన్స్ ఆర్టికల్ | Church Pastor Guidance Articles</a>
-                        <a href="{% url 'core:about-section' 'add-your-church' %}">మీ చర్చి మా వెబ్‌సైట్‌లో ఎలా చేర్చాలి | How to Add Your Church to the Website</a>
-                        <a href="{% url 'core:about-section' 'add-announcements' %}">క్రైస్తవులకు సంబంధించిన మాటలు చేర్చండి | Add Christian Announcements</a>
-                        <a href="{% url 'core:about-section' 'prayer-requests' %}">క్రైస్తవుల కోసం ప్రార్థన అవసరాలు | Prayer Requests for Christians</a>
-                        <a href="{% url 'core:about-section' 'photo-gallery' %}">ఫోటో గ్యాలరీ | Photo Gallery</a>
-                        <a href="{% url 'core:contact' %}">CONTACT US</a>
-                        <a href="{% url 'core:home' %}">HOME</a>
+                        <a href="{% url 'core:about-section' 'about-us' %}">మా గురించి</a>
+                        <a href="{% url 'core:about-section' 'our-help' %}">మీకు మా సహాయం</a>
+                        <a href="{% url 'core:about-section' 'how-to-use' %}">వెబ్ సైట్ ఎలా ఉపయోగించాలి</a>
+                        <a href="{% url 'core:about-section' 'pastor-guidance-articles' %}">చర్చి పాస్టర్ మార్గదర్శక వ్యాసాలు</a>
+                        <a href="{% url 'core:about-section' 'add-your-church' %}">మీ చర్చి మా వెబ్‌సైట్‌లో ఎలా చేర్చాలి</a>
+                        <a href="{% url 'core:about-section' 'add-announcements' %}">క్రైస్తవులకు సంబంధించిన మాటలు చేర్చండి</a>
+                        <a href="{% url 'core:about-section' 'prayer-requests' %}">క్రైస్తవుల కోసం ప్రార్థన అవసరాలు</a>
+                        <a href="{% url 'core:about-section' 'photo-gallery' %}">ఫోటో గ్యాలరీ</a>
+                        <a href="{% url 'core:contact' %}">సంప్రదించండి</a>
+                        <a href="{% url 'core:home' %}">హోమ్</a>
                     </div>
                 </div>
-                <a href="{% url 'directory:register' %}">Register / నమోదు</a>
+                <a href="{% url 'directory:register' %}">నమోదు</a>
                 <div class="nav-dropdown">
-                    <a class="nav-dropdown-trigger" data-nav-dropdown-trigger aria-expanded="false" href="{% url 'meetings:view' %}">Meetings / సమావేశాలు</a>
+                    <a class="nav-dropdown-trigger" data-nav-dropdown-trigger aria-expanded="false" href="{% url 'meetings:view' %}">సమావేశాలు</a>
                     <div class="submenu-panel">
-                        <a href="{% url 'meetings:submit' %}">సబ్మిట్ చేయుటకు | Submit Meeting Details</a>
-                        <a href="{% url 'meetings:view' %}">View Meeting Details</a>
+                        <a href="{% url 'meetings:submit' %}">సమావేశ వివరాలు పంపించండి</a>
+                        <a href="{% url 'meetings:view' %}">సమావేశ వివరాలు చూడండి</a>
                     </div>
                 </div>
                 <div class="nav-dropdown">
-                    <a class="nav-dropdown-trigger" data-nav-dropdown-trigger aria-expanded="false" href="{% url 'songs:search' %}">Songs&Books / పాటలు & పుస్తకాలు</a>
+                    <a class="nav-dropdown-trigger" data-nav-dropdown-trigger aria-expanded="false" href="{% url 'songs:search' %}">పాటలు & పుస్తకాలు</a>
                     <div class="submenu-panel">
-                        <a href="{% url 'songs:category' 'telugu' %}">Telugu Songs</a>
-                        <a href="{% url 'songs:category' 'hymns' %}">Hymns</a>
-                        <a href="{% url 'songs:category' 'choruses' %}">Choruses</a>
-                        <a href="{% url 'songs:books' %}">Christian Books</a>
+                        <a href="{% url 'songs:category' 'telugu' %}">తెలుగు పాటలు</a>
+                        <a href="{% url 'songs:category' 'hymns' %}">హిమ్స్</a>
+                        <a href="{% url 'songs:category' 'choruses' %}">కొరస్ పాటలు</a>
+                        <a href="{% url 'songs:books' %}">క్రైస్తవ పుస్తకాలు</a>
                     </div>
                 </div>
-                <a href="{% url 'directory:search' %}">Search / శోధన</a>
-                <a href="{% url 'directory:map-search' %}">District Map</a>
-                <a href="{% url 'updates:list' %}">News / వార్తలు</a>
-                <a href="{% url 'core:contact' %}">Contact / సంప్రదించండి</a>
+                <a href="{% url 'directory:search' %}">శోధన</a>
+                <a href="{% url 'directory:map-search' %}">జిల్లా మ్యాప్</a>
+                <a href="{% url 'updates:list' %}">వార్తలు</a>
+                <a href="{% url 'core:contact' %}">సంప్రదించండి</a>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'core:dashboard' %}">Dashboard / డాష్‌బోర్డ్</a>
+                    <a href="{% url 'core:dashboard' %}">డాష్‌బోర్డ్</a>
                     {% if user.is_staff %}
-                        <a href="{% url 'core:admin-dashboard' %}">Admin Dashboard</a>
+                        <a href="{% url 'core:admin-dashboard' %}">నిర్వాహక డాష్‌బోర్డ్</a>
                     {% endif %}
-                    <a class="nav-accent" href="{% url 'accounts:logout' %}">Logout</a>
+                    <a class="nav-accent" href="{% url 'accounts:logout' %}">లాగ్ అవుట్</a>
                 {% else %}
-                    <a class="nav-accent" href="{% url 'accounts:login' %}">Login / ప్రవేశం</a>
+                    <a class="nav-accent" href="{% url 'accounts:login' %}">ప్రవేశం</a>
                 {% endif %}
             </nav>
         </div>
@@ -85,34 +83,58 @@
             {% endfor %}
         </div>
     {% endif %}
-    <main>
+    <main class="site-main">
         {% block content %}{% endblock %}
     </main>
+    <div class="lang-floating" aria-label="భాష ఎంపిక">
+        <div class="lang-switch">
+            <button type="button" class="lang-button" data-lang="te">తెలుగు</button>
+            <button type="button" class="lang-button" data-lang="en">English</button>
+        </div>
+    </div>
     <footer class="site-footer">
         <div class="container footer-grid">
             <div>
-                <p class="footer-eyebrow">JBAC Network</p>
-                <h2>Community directory, secure registrations, and council updates.</h2>
-                <p class="muted">Designed for believers, pastors, churches, students, and ministry organizations in Andhra Pradesh.</p>
+                <p class="footer-eyebrow">JBAC నెట్‌వర్క్</p>
+                <h2>క్రైస్తవ సమాజం కోసం విశ్వాస ఆధారిత డిజిటల్ వేదిక.</h2>
+                <p class="muted footer-muted">ఆంధ్రప్రదేశ్‌లోని విశ్వాసులు, పాస్టర్లు, చర్చిలు, విద్యార్థులు, మినిస్ట్రీల కోసం రూపొందించబడింది.</p>
+                <div class="footer-social" aria-label="social links">
+                    <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">YT</a>
+                    <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">FB</a>
+                    <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">IG</a>
+                </div>
             </div>
             <div>
-                <p class="footer-eyebrow">Quick Links</p>
+                <p class="footer-eyebrow">త్వరిత లింకులు</p>
                 <ul class="footer-links">
-                    <li><a href="{% url 'directory:register' %}">Registration center</a></li>
-                    <li><a href="{% url 'directory:search' %}">Church and pastor search</a></li>
-                    <li><a href="{% url 'updates:list' %}">News and updates</a></li>
-                    <li><a href="{% url 'core:contact' %}">Founder and contact details</a></li>
+                    <li><a href="{% url 'directory:register' %}">నమోదు కేంద్రం</a></li>
+                    <li><a href="{% url 'directory:search' %}">చర్చి మరియు పాస్టర్ శోధన</a></li>
+                    <li><a href="{% url 'updates:list' %}">వార్తలు మరియు అప్డేట్లు</a></li>
+                    <li><a href="{% url 'core:contact' %}">స్థాపకుడు మరియు సంప్రదింపు వివరాలు</a></li>
                 </ul>
             </div>
             <div>
-                <p class="footer-eyebrow">Contact</p>
-                <p>Founder: Dr. Joseph P. Mosiganti</p>
-                <p>Email: info@jbac.in</p>
-                <p>Phone: +91 90000 12345</p>
-                <p>Andhra Pradesh, India</p>
+                <p class="footer-eyebrow">సేవా విభాగం</p>
+                <ul class="footer-links">
+                    <li><a href="{% url 'accounts:login' %}">సభ్యుల ప్రవేశం</a></li>
+                    <li><a href="{% url 'directory:map-search' %}">జిల్లా మ్యాప్ శోధన</a></li>
+                    <li><a href="{% url 'meetings:view' %}">రాబోయే సమావేశాలు</a></li>
+                    <li><a href="{% url 'songs:search' %}">పాటలు మరియు పుస్తకాలు</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="footer-eyebrow">సంప్రదింపు</p>
+                <p>స్థాపకుడు: Dr. Joseph P. Mosiganti</p>
+                <p>ఇమెయిల్: info@jbac.in</p>
+                <p>ఫోన్: +91 90000 12345</p>
+                <p>ఆంధ్రప్రదేశ్, భారత్</p>
             </div>
         </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2026 JBAC. అన్ని హక్కులు సురక్షితం.</p>
+        </div>
     </footer>
+    <div id="google_translate_element" style="display:none;"></div>
     <script src="{% static 'js/site.js' %}"></script>
     {% block extra_scripts %}{% endblock %}
 </body>

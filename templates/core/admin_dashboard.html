@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}JBAC | Admin Dashboard{% endblock %}
+{% block title %}JBAC | నిర్వాహక డాష్‌బోర్డ్{% endblock %}
 
 {% block content %}
 <section class="page-hero page-hero-tight">
     <div class="container" data-reveal>
-        <p class="eyebrow">Admin Dashboard</p>
-        <h1>Operational summary for council admins</h1>
-        <p class="hero-text">Track pending approvals and recently submitted registrations from one screen.</p>
+        <p class="eyebrow">నిర్వాహక డాష్‌బోర్డ్</p>
+        <h1>కౌన్సిల్ నిర్వాహకుల కోసం నిర్వహణ సారాంశం</h1>
+        <p class="hero-text">ఒకే స్క్రీన్‌లో పెండింగ్ ఆమోదాలు మరియు ఇటీవల సమర్పించిన నమోదులను ట్రాక్ చేయండి.</p>
     </div>
 </section>
 
@@ -15,27 +15,27 @@
     <div class="container data-grid">
         <article class="metric-card" data-reveal>
             <strong>{{ stats.users }}</strong>
-            <span>Total users</span>
+            <span>మొత్తం వినియోగదారులు</span>
         </article>
         <article class="metric-card" data-reveal>
             <strong>{{ stats.pending_believers }}</strong>
-            <span>Pending believers</span>
+            <span>పెండింగ్ విశ్వాసులు</span>
         </article>
         <article class="metric-card" data-reveal>
             <strong>{{ stats.pending_pastors }}</strong>
-            <span>Pending pastors</span>
+            <span>పెండింగ్ పాస్టర్లు</span>
         </article>
         <article class="metric-card" data-reveal>
             <strong>{{ stats.pending_students }}</strong>
-            <span>Pending students</span>
+            <span>పెండింగ్ విద్యార్థులు</span>
         </article>
         <article class="metric-card" data-reveal>
             <strong>{{ stats.pending_churches }}</strong>
-            <span>Pending churches</span>
+            <span>పెండింగ్ చర్చిలు</span>
         </article>
         <article class="metric-card" data-reveal>
             <strong>{{ stats.pending_organizations }}</strong>
-            <span>Pending organizations</span>
+            <span>పెండింగ్ సంస్థలు</span>
         </article>
     </div>
 </section>
@@ -43,7 +43,7 @@
 <section class="section-shell section-contrast">
     <div class="container recent-grid">
         <article class="list-card" data-reveal>
-            <h2>Recent believers</h2>
+            <h2>ఇటీవలి విశ్వాసులు</h2>
             {% for row in recent_registrations.believers %}
                 <div>
                     <p>{{ row.full_name }}</p>
@@ -53,11 +53,11 @@
                     </div>
                 </div>
             {% empty %}
-                <p>No recent believer registrations.</p>
+                <p>ఇటీవల విశ్వాసి నమోదులు లేవు.</p>
             {% endfor %}
         </article>
         <article class="list-card" data-reveal>
-            <h2>Recent pastors</h2>
+            <h2>ఇటీవలి పాస్టర్లు</h2>
             {% for row in recent_registrations.pastors %}
                 <div>
                     <p>{{ row.pastor_name }} ({{ row.church_name }})</p>
@@ -67,11 +67,11 @@
                     </div>
                 </div>
             {% empty %}
-                <p>No recent pastor registrations.</p>
+                <p>ఇటీవల పాస్టర్ నమోదులు లేవు.</p>
             {% endfor %}
         </article>
         <article class="list-card" data-reveal>
-            <h2>Recent churches</h2>
+            <h2>ఇటీవలి చర్చిలు</h2>
             {% for row in recent_registrations.churches %}
                 <div>
                     <p>{{ row.church_name }}</p>
@@ -81,7 +81,7 @@
                     </div>
                 </div>
             {% empty %}
-                <p>No recent church registrations.</p>
+                <p>ఇటీవల చర్చి నమోదులు లేవు.</p>
             {% endfor %}
         </article>
     </div>

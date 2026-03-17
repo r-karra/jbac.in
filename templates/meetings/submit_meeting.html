@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
 
-{% block title %}JBAC | Submit Meeting Details{% endblock %}
+{% block title %}JBAC | సమావేశ వివరాలు పంపించండి{% endblock %}
 
 {% block content %}
 <section class="page-hero page-hero-tight">
     <div class="container" data-reveal>
-        <p class="eyebrow">JBAC Meetings</p>
-        <h1>సబ్మిట్ చేయుటకు | Submit Meeting Details</h1>
+        <p class="eyebrow">JBAC సమావేశాలు</p>
+        <h1>సమావేశ వివరాలు పంపించండి</h1>
         <p class="hero-text">క్రైస్తవ సమావేశాల వివరాలను ఈ ఫారమ్ ద్వారా పంపించవచ్చు. మీరు పంపిన సమాచారం పరిశీలించిన తర్వాత వెబ్‌సైట్‌లో ప్రచురించబడుతుంది.</p>
-        <p class="hero-text">You can submit details of Christian meetings through this form. After verification, the information may be published on the website.</p>
+        <p class="hero-text">మీరు ఇచ్చిన వివరాలు నిర్వాహక ధృవీకరణ అనంతరం వెబ్‌సైట్‌లో ప్రచురించబడవచ్చు.</p>
     </div>
 </section>
 
 <section class="section-shell">
     <div class="container split-layout">
         <article class="form-card" data-reveal>
-            <h2>Meeting Submission Form</h2>
+            <h2>సమావేశ సమర్పణ ఫారం</h2>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% if form.non_field_errors %}
@@ -27,8 +27,8 @@
                         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                         {{ field }}
                         {% if field.name == 'google_map_location' %}
-                            <button class="button button-secondary" type="button" id="current-location-btn">Use Current Location</button>
-                            <p class="muted" id="location-status">Location not captured yet.</p>
+                            <button class="button button-secondary" type="button" id="current-location-btn">ప్రస్తుత స్థానాన్ని ఉపయోగించండి</button>
+                            <p class="muted" id="location-status">స్థానం ఇంకా పొందబడలేదు.</p>
                         {% endif %}
                         {% if field.help_text %}<p class="field-help">{{ field.help_text }}</p>{% endif %}
                         {% for error in field.errors %}
@@ -38,18 +38,18 @@
                 {% endfor %}
 
                 <div class="hero-actions">
-                    <button class="button button-primary" type="submit">Submit</button>
-                    <button class="button button-secondary" type="reset">Reset</button>
+                    <button class="button button-primary" type="submit">సమర్పించండి</button>
+                    <button class="button button-secondary" type="reset">రీసెట్</button>
                 </div>
             </form>
         </article>
 
         <aside class="info-card" data-reveal>
-            <p class="panel-label">Important</p>
+            <p class="panel-label">ముఖ్యం</p>
             <ul class="check-list">
-                <li>Organizer phone number is collected for verification and is not displayed publicly.</li>
-                <li>Use the current location button to auto-fill latitude and longitude.</li>
-                <li>Poster and YouTube links are optional but improve discoverability.</li>
+                <li>ధృవీకరణ కోసం నిర్వాహకుడి ఫోన్ నంబర్ సేకరించబడుతుంది; అది ప్రజలకు చూపబడదు.</li>
+                <li>అక్షాంశం, రేఖాంశం ఆటోఫిల్ కోసం ప్రస్తుత స్థానం బటన్‌ను ఉపయోగించండి.</li>
+                <li>పోస్టర్ మరియు యూట్యూబ్ లింకులు ఐచ్ఛికం, కానీ వీటి వల్ల కనుగొనడం సులభమవుతుంది.</li>
             </ul>
         </aside>
     </div>
@@ -71,11 +71,11 @@
 
     locationBtn.addEventListener("click", function () {
         if (!navigator.geolocation) {
-            locationStatus.textContent = "Geolocation is not supported in this browser.";
+            locationStatus.textContent = "ఈ బ్రౌజర్‌లో జియోలొకేషన్ సపోర్ట్ లేదు.";
             return;
         }
 
-        locationStatus.textContent = "Fetching your location...";
+        locationStatus.textContent = "మీ స్థానం పొందుతున్నాం...";
 
         navigator.geolocation.getCurrentPosition(
             function (position) {
@@ -86,10 +86,10 @@
                 if (mapInput && !mapInput.value) {
                     mapInput.value = "https://maps.google.com/?q=" + lat + "," + lng;
                 }
-                locationStatus.textContent = "Current location captured successfully.";
+                locationStatus.textContent = "ప్రస్తుత స్థానం విజయవంతంగా పొందబడింది.";
             },
             function (error) {
-                locationStatus.textContent = "Unable to fetch location: " + error.message;
+                locationStatus.textContent = "స్థానం పొందలేకపోయాం: " + error.message;
             }
         );
     });

@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}JBAC | Register{% endblock %}
+{% block title %}JBAC | నమోదు కేంద్రం{% endblock %}
 
 {% block content %}
 <section class="page-hero page-hero-tight">
     <div class="container" data-reveal>
-        <p class="eyebrow">Registration Center</p>
-        <h1>Choose the right JBAC registration path</h1>
-        <p class="hero-text">Every category has its own secure form so the council can maintain accurate data and protect sensitive information.</p>
+        <p class="eyebrow">నమోదు కేంద్రం</p>
+        <h1>మీకు సరైన JBAC నమోదు మార్గాన్ని ఎంచుకోండి</h1>
+        <p class="hero-text">ప్రతి విభాగానికి వేరు సురక్షిత ఫారం ఉంటుంది. దీని ద్వారా కౌన్సిల్ ఖచ్చితమైన డేటాను నిర్వహించి సున్నితమైన సమాచారాన్ని రక్షిస్తుంది.</p>
     </div>
 </section>
 
@@ -18,7 +18,7 @@
                 <p class="panel-label">{{ item.title_te }}</p>
                 <h2>{{ item.title }}</h2>
                 <p>{{ item.description }}</p>
-                <a class="button button-secondary" href="{% url 'directory:register-category' item.slug %}">Open form</a>
+                <a class="button button-secondary" href="{% url 'directory:register-category' item.slug %}">ఫారం తెరవండి</a>
             </article>
         {% endfor %}
     </div>

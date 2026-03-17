@@ -13,8 +13,8 @@ from .models import (
 )
 
 
-DISTRICT_FIELD_CHOICES = [("", "Select district")] + DISTRICT_CHOICES
-STATE_FIELD_CHOICES = [("", "Select state")] + STATE_CHOICES
+DISTRICT_FIELD_CHOICES = [("", "జిల్లా ఎంచుకోండి")] + DISTRICT_CHOICES
+STATE_FIELD_CHOICES = [("", "రాష్ట్రం ఎంచుకోండి")] + STATE_CHOICES
 
 
 class StyledFormMixin:
@@ -33,12 +33,12 @@ class StyledFormMixin:
 
 
 class BaseRegistrationForm(StyledFormMixin, forms.ModelForm):
-    mobile_number = forms.CharField(label="Mobile number")
-    email = forms.EmailField(required=False, label="Email")
-    password1 = forms.CharField(widget=forms.PasswordInput, label="Password")
-    password2 = forms.CharField(widget=forms.PasswordInput, label="Confirm password")
+    mobile_number = forms.CharField(label="మొబైల్ నంబర్")
+    email = forms.EmailField(required=False, label="ఇమెయిల్")
+    password1 = forms.CharField(widget=forms.PasswordInput, label="పాస్‌వర్డ్")
+    password2 = forms.CharField(widget=forms.PasswordInput, label="పాస్‌వర్డ్ నిర్ధారణ")
     consent = forms.BooleanField(
-        label="I agree that JBAC may securely store my details for community services.",
+        label="సమాజ సేవల కోసం JBAC నా వివరాలను సురక్షితంగా నిల్వ చేయడానికి నేను అంగీకరిస్తున్నాను.",
     )
 
     role_value = None
@@ -46,19 +46,19 @@ class BaseRegistrationForm(StyledFormMixin, forms.ModelForm):
     def clean_mobile_number(self):
         mobile_number = self.cleaned_data["mobile_number"].strip()
         if User.objects.filter(mobile_number=mobile_number).exists():
-            raise forms.ValidationError("This mobile number is already registered.")
+            raise forms.ValidationError("ఈ మొబైల్ నంబర్ ఇప్పటికే నమోదైంది.")
         return mobile_number
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
         if email and User.objects.filter(email__iexact=email).exists():
-            raise forms.ValidationError("This email address is already in use.")
+            raise forms.ValidationError("ఈ ఇమెయిల్ చిరునామా ఇప్పటికే ఉపయోగంలో ఉంది.")
         return email
 
     def clean(self):
         cleaned_data = super().clean()
         if cleaned_data.get("password1") != cleaned_data.get("password2"):
-            self.add_error("password2", "Passwords do not match.")
+            self.add_error("password2", "పాస్‌వర్డ్లు సరిపోలలేదు.")
         return cleaned_data
 
     def get_role_value(self):
@@ -114,7 +114,7 @@ class BelieverRegistrationForm(BaseRegistrationForm):
 
 class PastorRegistrationForm(BaseRegistrationForm):
     district = forms.ChoiceField(choices=DISTRICT_FIELD_CHOICES)
-    state = forms.ChoiceField(choices=STATE_FIELD_CHOICES, initial="Andhra Pradesh")
+    state = forms.ChoiceField(choices=STATE_FIELD_CHOICES, initial="ఆంధ్రప్రదేశ్")
     role_value = User.Role.PASTOR
 
     class Meta:
@@ -148,7 +148,7 @@ class PastorRegistrationForm(BaseRegistrationForm):
 
 class StudentRegistrationForm(BaseRegistrationForm):
     district = forms.ChoiceField(choices=DISTRICT_FIELD_CHOICES)
-    state = forms.ChoiceField(choices=STATE_FIELD_CHOICES, initial="Andhra Pradesh")
+    state = forms.ChoiceField(choices=STATE_FIELD_CHOICES, initial="ఆంధ్రప్రదేశ్")
     role_value = User.Role.STUDENT
 
     class Meta:
@@ -173,7 +173,7 @@ class StudentRegistrationForm(BaseRegistrationForm):
 
 class ChurchRegistrationForm(BaseRegistrationForm):
     district = forms.ChoiceField(choices=DISTRICT_FIELD_CHOICES)
-    state = forms.ChoiceField(choices=STATE_FIELD_CHOICES, initial="Andhra Pradesh")
+    state = forms.ChoiceField(choices=STATE_FIELD_CHOICES, initial="ఆంధ్రప్రదేశ్")
     role_value = User.Role.CHURCH
 
     class Meta:
@@ -205,14 +205,14 @@ class ChurchRegistrationForm(BaseRegistrationForm):
 
 class OrganizationRegistrationForm(BaseRegistrationForm):
     district = forms.ChoiceField(choices=DISTRICT_FIELD_CHOICES)
-    state = forms.ChoiceField(choices=STATE_FIELD_CHOICES, initial="Andhra Pradesh")
+    state = forms.ChoiceField(choices=STATE_FIELD_CHOICES, initial="ఆంధ్రప్రదేశ్")
     organization_role = forms.ChoiceField(
         choices=[
-            (User.Role.PASTOR_ASSOCIATION, "Pastor Association"),
-            (User.Role.MINISTRY, "Ministries"),
-            (User.Role.ORGANIZATION, "Christian Organization / Company"),
+            (User.Role.PASTOR_ASSOCIATION, "పాస్టర్స్ అసోసియేషన్"),
+            (User.Role.MINISTRY, "మినిస్ట్రీలు"),
+            (User.Role.ORGANIZATION, "క్రైస్తవ సంస్థ / కంపెనీ"),
         ],
-        label="Organization category",
+        label="సంస్థ వర్గం",
     )
 
     class Meta:

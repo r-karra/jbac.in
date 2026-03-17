@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}JBAC | Search{% endblock %}
+{% block title %}JBAC | శోధన{% endblock %}
 
 {% block content %}
 <section class="page-hero page-hero-tight">
     <div class="container" data-reveal>
-        <p class="eyebrow">Directory Search</p>
-        <h1>Search approved pastors and churches</h1>
-        <p class="hero-text">Use district and state filters to find ministry contacts that have been cleared for public visibility.</p>
+        <p class="eyebrow">డైరెక్టరీ శోధన</p>
+        <h1>ఆమోదిత పాస్టర్లు మరియు చర్చిలను శోధించండి</h1>
+        <p class="hero-text">ప్రజా ప్రదర్శనకు ఆమోదించిన సేవా సంప్రదింపు వివరాలను కనుగొనడానికి జిల్లా మరియు రాష్ట్ర ఫిల్టర్లను ఉపయోగించండి.</p>
     </div>
 </section>
 
@@ -15,65 +15,65 @@
     <div class="container search-layout">
         <form class="search-panel" method="get" data-reveal>
             <div class="form-row">
-                <label for="query">Name, church, village, or phone</label>
-                <input class="form-input" type="text" name="query" id="query" value="{{ query }}" placeholder="Search by name or church">
+                <label for="query">పేరు, చర్చి, గ్రామం, లేదా ఫోన్</label>
+                <input class="form-input" type="text" name="query" id="query" value="{{ query }}" placeholder="పేరు లేదా చర్చి ద్వారా శోధించండి">
             </div>
             <div class="form-row">
-                <label for="type">Directory type</label>
+                <label for="type">డైరెక్టరీ రకం</label>
                 <select class="form-select" name="type" id="type">
-                    <option value="all" {% if directory_type == 'all' %}selected{% endif %}>All</option>
-                    <option value="pastor" {% if directory_type == 'pastor' %}selected{% endif %}>Pastors</option>
-                    <option value="church" {% if directory_type == 'church' %}selected{% endif %}>Churches</option>
+                    <option value="all" {% if directory_type == 'all' %}selected{% endif %}>అన్నీ</option>
+                    <option value="pastor" {% if directory_type == 'pastor' %}selected{% endif %}>పాస్టర్లు</option>
+                    <option value="church" {% if directory_type == 'church' %}selected{% endif %}>చర్చిలు</option>
                 </select>
             </div>
             <div class="form-row">
-                <label for="district">District</label>
+                <label for="district">జిల్లా</label>
                 <select class="form-select" name="district" id="district">
-                    <option value="">All districts</option>
+                    <option value="">అన్ని జిల్లాలు</option>
                     {% for value, label in district_choices %}
                         <option value="{{ value }}" {% if district == value %}selected{% endif %}>{{ label }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="form-row">
-                <label for="state">State</label>
+                <label for="state">రాష్ట్రం</label>
                 <select class="form-select" name="state" id="state">
-                    <option value="">All states</option>
+                    <option value="">అన్ని రాష్ట్రాలు</option>
                     {% for value, label in state_choices %}
                         <option value="{{ value }}" {% if state == value %}selected{% endif %}>{{ label }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <button class="button button-primary" type="submit">Search directory</button>
+            <button class="button button-primary" type="submit">డైరెక్టరీ శోధించండి</button>
         </form>
         <div>
             {% if pastors or churches %}
                 <div class="results-grid">
                     {% for pastor in pastors %}
                         <article class="result-card" data-reveal>
-                            <p class="result-tag">Pastor</p>
+                            <p class="result-tag">పాస్టర్</p>
                             <h3>{{ pastor.pastor_name }}</h3>
                             <p>{{ pastor.church_name }}</p>
                             <p>{{ pastor.district }}, {{ pastor.state }}</p>
                             <p>{{ pastor.user.mobile_number }}</p>
-                            <p>{{ pastor.user.email|default:'Email not provided' }}</p>
+                            <p>{{ pastor.user.email|default:'ఇమెయిల్ ఇవ్వలేదు' }}</p>
                         </article>
                     {% endfor %}
                     {% for church in churches %}
                         <article class="result-card" data-reveal>
-                            <p class="result-tag">Church</p>
+                            <p class="result-tag">చర్చి</p>
                             <h3>{{ church.church_name }}</h3>
-                            <p>Pastor: {{ church.pastor_name }}</p>
+                            <p>పాస్టర్: {{ church.pastor_name }}</p>
                             <p>{{ church.village }}{% if church.village and church.district %}, {% endif %}{{ church.district }}</p>
                             <p>{{ church.user.mobile_number }}</p>
-                            <p>{{ church.user.email|default:'Email not provided' }}</p>
+                            <p>{{ church.user.email|default:'ఇమెయిల్ ఇవ్వలేదు' }}</p>
                         </article>
                     {% endfor %}
                 </div>
             {% else %}
                 <div class="empty-state" data-reveal>
-                    <h2>No public records matched your search</h2>
-                    <p>Try another district or remove a filter. Admin approval is required before profiles appear here.</p>
+                    <h2>మీ శోధనకు సరిపోయే ప్రజా రికార్డులు లేవు</h2>
+                    <p>ఇంకో జిల్లాను ప్రయత్నించండి లేదా ఫిల్టర్ తొలగించండి. ప్రొఫైళ్లు ఇక్కడ కనిపించడానికి నిర్వాహక ఆమోదం అవసరం.</p>
                 </div>
             {% endif %}
         </div>

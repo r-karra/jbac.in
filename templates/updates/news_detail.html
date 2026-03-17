@@ -17,11 +17,11 @@
             <div class="article-body">{{ article.content|linebreaks }}</div>
         </article>
         <aside class="sidebar-card" data-reveal>
-            <h2>More updates</h2>
+            <h2>మరిన్ని అప్డేట్లు</h2>
             {% for related in related_articles %}
                 <a class="related-link" href="{% url 'updates:detail' related.slug %}">{{ related.title }}</a>
             {% empty %}
-                <p class="muted">No related articles available.</p>
+                <p class="muted">సంబంధిత వ్యాసాలు లేవు.</p>
             {% endfor %}
         </aside>
     </div>

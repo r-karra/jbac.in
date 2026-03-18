@@ -19,6 +19,7 @@ ABOUT_SECTIONS = {
 		"title_te": "మా గురించి",
 		"title_en": "About Us",
 		"description": "JBAC is a Christian community platform focused on registrations, directory services, and trusted communication.",
+		"youtube_embed_src": "",
 		"points": [
 			"Secure registrations for believers, pastors, students, churches, and organizations.",
 			"Bilingual support in Telugu and English.",
@@ -29,6 +30,7 @@ ABOUT_SECTIONS = {
 		"title_te": "మీకు మా సహాయం",
 		"title_en": "Our Help",
 		"description": "We help churches and believers onboard quickly and use JBAC services effectively.",
+		"youtube_embed_src": "",
 		"points": [
 			"Registration support for all role categories.",
 			"Directory discoverability for approved ministries.",
@@ -39,6 +41,7 @@ ABOUT_SECTIONS = {
 		"title_te": "వెబ్ సైట్ ఎలా ఉపయోగించాలి",
 		"title_en": "How to Use the Website",
 		"description": "Follow these steps to use the website productively.",
+		"youtube_embed_src": "",
 		"points": [
 			"Choose the correct registration type.",
 			"Login with password or OTP.",
@@ -49,6 +52,7 @@ ABOUT_SECTIONS = {
 		"title_te": "చర్చి పాస్టర్ గైడెన్స్ ఆర్టికల్",
 		"title_en": "Church Pastor Guidance Articles",
 		"description": "Guidance topics for pastors and church leaders.",
+		"youtube_embed_src": "",
 		"points": [
 			"Digital presence for local church outreach.",
 			"Member care and confidentiality practices.",
@@ -59,6 +63,7 @@ ABOUT_SECTIONS = {
 		"title_te": "మీ చర్చి మా వెబ్‌సైట్‌లో ఎలా చేర్చాలి",
 		"title_en": "How to Add Your Church to the Website",
 		"description": "Register a church profile and include location details for map visibility.",
+		"youtube_embed_src": "",
 		"points": [
 			"Use Church Registration under Register menu.",
 			"Fill church name, pastor name, district, and contact details.",
@@ -69,6 +74,7 @@ ABOUT_SECTIONS = {
 		"title_te": "క్రైస్తవులకు సంబంధించిన మాటలు చేర్చండి",
 		"title_en": "Add Christian Announcements",
 		"description": "Share verified Christian community announcements through JBAC admin moderation.",
+		"youtube_embed_src": "",
 		"points": [
 			"Prepare title, summary, and event details.",
 			"Contact JBAC admins for publishing workflow.",
@@ -79,6 +85,7 @@ ABOUT_SECTIONS = {
 		"title_te": "క్రైస్తవుల కోసం ప్రార్థన అవసరాలు",
 		"title_en": "Prayer Requests for Christians",
 		"description": "You can share prayer requests with council support channels.",
+		"youtube_embed_src": "",
 		"points": [
 			"Include person name and short prayer context.",
 			"Avoid sensitive private information.",
@@ -89,6 +96,7 @@ ABOUT_SECTIONS = {
 		"title_te": "ఫోటో గ్యాలరీ",
 		"title_en": "Photo Gallery",
 		"description": "A curated gallery area for Christian events and ministry moments.",
+		"youtube_embed_src": "",
 		"points": [
 			"Event photos can be shared after moderation.",
 			"Use high-quality images with proper captions.",
@@ -147,6 +155,7 @@ def about_subpage(request, section=None):
 				"title_te": row.page_title_te,
 				"title_en": row.page_title_en,
 				"description": row.description,
+				"youtube_embed_src": row.youtube_embed_src(),
 				"points": row.points(),
 			}
 			menu_items.append(

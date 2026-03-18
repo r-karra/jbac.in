@@ -33,9 +33,10 @@ body {
     font-family: "Source Sans 3", "Noto Sans Telugu", sans-serif;
     line-height: 1.6;
     background:
-        radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.1), transparent 36%),
-        radial-gradient(circle at 100% 0%, rgba(30, 64, 175, 0.08), transparent 34%),
-        linear-gradient(180deg, #f8fbff 0%, #f4f7fc 100%);
+        radial-gradient(70rem 34rem at -12% -8%, rgba(30, 64, 175, 0.14), transparent 58%),
+        radial-gradient(56rem 28rem at 112% -6%, rgba(14, 116, 144, 0.12), transparent 54%),
+        linear-gradient(180deg, #f9fbff 0%, #eef3f9 52%, #f7fafd 100%);
+    background-attachment: fixed;
 }
 
 a {
@@ -77,6 +78,17 @@ img {
 
 .site-main {
     position: relative;
+    isolation: isolate;
+}
+
+.site-main::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0.12) 22%, rgba(255, 255, 255, 0));
+    z-index: -1;
 }
 
 body {
@@ -489,6 +501,52 @@ iframe.skiptranslate,
     font-size: clamp(2rem, 3.2vw, 3rem);
 }
 
+.home-points-list {
+    margin: 0;
+    padding-left: 1.4rem;
+    display: grid;
+    gap: 0.9rem;
+}
+
+.home-points-list li {
+    color: var(--muted);
+    padding: 0.95rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: var(--shadow-sm);
+}
+
+.home-points-list li strong {
+    color: #0f172a;
+}
+
+.home-points-list li a {
+    display: inline-flex;
+    margin-top: 0.25rem;
+    color: var(--primary-strong);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.home-author-details {
+    margin-top: 1.15rem;
+    padding: 1.1rem 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: var(--shadow-sm);
+}
+
+.home-author-details p {
+    margin-bottom: 0.35rem;
+}
+
+.home-author-details p:last-child {
+    margin-bottom: 0;
+}
+
 .panel-card,
 .feature-card,
 .info-card,
@@ -869,6 +927,22 @@ button[type="submit"]:focus-visible {
     color: #0f172a;
     border-color: #93c5fd;
     background: #eff6ff;
+}
+
+.about-video-embed {
+    margin-top: 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: #000;
+    box-shadow: var(--shadow-sm);
+}
+
+.about-video-embed iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
 }
 
 .gallery-grid {
@@ -1343,6 +1417,14 @@ button[type="submit"]:focus-visible {
 @media (max-width: 640px) {
     .container {
         width: min(100% - 1.2rem, 1180px);
+    }
+
+    .home-points-list {
+        padding-left: 1.1rem;
+    }
+
+    .home-points-list li {
+        padding: 0.85rem 0.8rem;
     }
 
     .hero-section,

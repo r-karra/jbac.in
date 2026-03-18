@@ -33,15 +33,30 @@
         <article class="about-content-card" data-reveal>
             {% if has_selected_content %}
                 <h2>{{ section_data.title_te|default:section_data.title_en }}</h2>
-                <p>{{ section_data.description }}</p>
+                <p>{{ section_data.description|linebreaksbr }}</p>
                 {% if content_source == 'admin' %}
                     <p class="muted">కంటెంట్ మూలం: నిర్వహణ విభాగం నిర్వహించిన పేజీ కంటెంట్</p>
                 {% endif %}
-                <ul class="check-list">
-                    {% for point in section_data.points %}
-                        <li>{{ point }}</li>
-                    {% endfor %}
-                </ul>
+                {% if section_data.points %}
+                    <ul class="check-list">
+                        {% for point in section_data.points %}
+                            <li>{{ point }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {% if section_data.youtube_embed_src %}
+                    <div class="about-video-embed">
+                        <iframe
+                            src="{{ section_data.youtube_embed_src }}"
+                            title="YouTube video"
+                            loading="lazy"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                {% endif %}
 
                 {% if section == 'photo-gallery' %}
                     <div class="gallery-grid">

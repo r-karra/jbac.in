@@ -6,6 +6,9 @@ from django.utils.text import slugify
 class NewsArticle(models.Model):
 	title = models.CharField(max_length=300)
 	slug = models.SlugField(max_length=320, unique=True, blank=True)
+	image = models.ImageField(upload_to="updates/news/", blank=True, null=True)
+	image_url = models.URLField(blank=True)
+	youtube_embed_url = models.URLField(blank=True)
 	summary = models.TextField(blank=True)
 	content = models.TextField()
 	published_at = models.DateTimeField()
@@ -24,3 +27,9 @@ class NewsArticle(models.Model):
 
 	def __str__(self):
 		return self.title
+
+	@property
+	def display_image_url(self):
+		if self.image:
+			return self.image.url
+		return self.image_url

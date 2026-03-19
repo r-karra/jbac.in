@@ -14,6 +14,9 @@
 <section class="section-shell">
     <div class="container article-layout">
         <article class="article-card" data-reveal>
+            {% if article.display_image_url %}
+                <img src="{{ article.display_image_url }}" alt="{{ article.title }}" loading="lazy">
+            {% endif %}
             <div class="article-body">{{ article.content|linebreaks }}</div>
         </article>
         <aside class="sidebar-card" data-reveal>

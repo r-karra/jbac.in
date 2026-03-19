@@ -199,6 +199,14 @@ def contact(request):
 	return render(request, "core/contact.html")
 
 
+def privacy_policy(request):
+	return render(request, "core/privacy_policy.html")
+
+
+def terms_conditions(request):
+	return render(request, "core/terms_conditions.html")
+
+
 @login_required
 def dashboard(request):
 	profile = get_profile_for_user(request.user)

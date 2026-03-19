@@ -15,6 +15,9 @@
     <div class="container news-grid news-grid-list">
         {% for article in articles %}
             <article class="news-card" data-reveal>
+                {% if article.display_image_url %}
+                    <img src="{{ article.display_image_url }}" alt="{{ article.title }}" loading="lazy">
+                {% endif %}
                 <p class="news-date">{{ article.published_at|date:'d M Y' }}</p>
                 <h2>{{ article.title }}</h2>
                 <p>{{ article.summary|default:article.content|truncatechars:180 }}</p>

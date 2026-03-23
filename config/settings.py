@@ -9,6 +9,26 @@ except ImportError:
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+def _load_dotenv_file(dotenv_path: Path) -> None:
+    if not dotenv_path.exists():
+        return
+
+    for raw_line in dotenv_path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if value == "":
+            continue
+        os.environ.setdefault(key, value)
+
+
+_load_dotenv_file(BASE_DIR / ".env")
+
 default_allowed_hosts = [
     "127.0.0.1",
     "localhost",
@@ -74,12 +94,29 @@ default_sqlite_db = {
     "NAME": BASE_DIR / "db.sqlite3",
 }
 
+db_conn_max_age = int(os.getenv("DB_CONN_MAX_AGE", "600"))
+db_ssl_require = os.getenv("DB_SSL_REQUIRE", "True").lower() == "true"
+db_sslmode = os.getenv("DB_SSLMODE", "require")
+
 if dj_database_url is not None:
+    db_config = dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=db_conn_max_age,
+        conn_health_checks=True,
+        ssl_require=db_ssl_require,
+    )
+
+    if db_config.get("ENGINE") == "django.db.backends.postgresql" and db_sslmode:
+        db_config.setdefault("OPTIONS", {})
+        db_config["OPTIONS"].setdefault("sslmode", db_sslmode)
+    else:
+        if "OPTIONS" in db_config and "sslmode" in db_config["OPTIONS"]:
+            db_config["OPTIONS"].pop("sslmode", None)
+            if not db_config["OPTIONS"]:
+                db_config.pop("OPTIONS", None)
+
     DATABASES = {
-        "default": dj_database_url.config(
-            default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-            conn_max_age=600,
-        )
+        "default": db_config
     }
 else:
     DATABASES = {"default": default_sqlite_db}

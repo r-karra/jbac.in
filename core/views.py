@@ -156,6 +156,8 @@ def about_subpage(request, section=None):
 				"title_en": row.page_title_en,
 				"description": row.description,
 				"youtube_embed_src": row.youtube_embed_src(),
+				"image": row.image,
+				"pdf": row.pdf,
 				"points": row.points(),
 			}
 			menu_items.append(

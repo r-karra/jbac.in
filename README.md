@@ -32,6 +32,10 @@ JBAC is a Django application for Jesus Believers Association Council. It provide
 - `ALLOWED_HOSTS`: comma-separated hosts, for example `jbac.in,www.jbac.in`
 - `CSRF_TRUSTED_ORIGINS`: comma-separated origins for production HTTPS deployments
 - `DATABASE_URL`: optional database URL. If omitted, SQLite is used.
+- `DB_CONN_MAX_AGE`: database persistent connection lifetime in seconds (default `600`)
+- `DB_SSL_REQUIRE`: force SSL when parsing Postgres URLs with `dj-database-url` (default `True`)
+- `DB_SSLMODE`: Postgres SSL mode added to connection options when using Postgres (default `require`)
+- `AUTO_PUBLISH_USER_NEWS`: `True` to publish logged-in user submissions immediately, `False` to require admin approval
 - `OTP_PROVIDER`: `console`, `twilio`, or `msg91`
 - `OTP_TWILIO_ACCOUNT_SID`: Twilio account SID (required when `OTP_PROVIDER=twilio`)
 - `OTP_TWILIO_AUTH_TOKEN`: Twilio auth token (required when `OTP_PROVIDER=twilio`)
@@ -48,6 +52,40 @@ DEBUG=True
 ALLOWED_HOSTS=127.0.0.1,localhost
 DATABASE_URL=postgres://user:password@hostname:5432/jbac
 OTP_PROVIDER=console
+```
+
+## Neon PostgreSQL Setup
+
+Use one Neon Postgres database for the entire Django website (all apps share Django's single `default` database).
+
+1. Create a Neon project and database from the Neon dashboard.
+2. Copy the connection string from Neon (`Connection Details`).
+3. Set environment variables:
+
+```env
+DATABASE_URL=postgresql://<user>:<password>@<host>/<dbname>?sslmode=require
+DB_SSL_REQUIRE=True
+DB_SSLMODE=require
+```
+
+4. Apply schema to Neon:
+
+```bash
+python manage.py migrate
+```
+
+5. (Optional) Move existing SQLite data into Neon:
+
+```bash
+python manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.permission > data.json
+python manage.py loaddata data.json
+```
+
+6. Verify DB connection:
+
+```bash
+python manage.py showmigrations
+python manage.py check
 ```
 
 ## Tests

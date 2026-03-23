@@ -1,5 +1,8 @@
+import os
+
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -33,13 +36,16 @@ def submit_news(request):
 		if form.is_valid():
 			article = form.save(commit=False)
 			article.published_at = timezone.now()
-			article.is_published = False  # Require admin approval
+			auto_publish = os.getenv("AUTO_PUBLISH_USER_NEWS", "True").lower() == "true"
+			article.is_published = auto_publish
 			article.save()
-			messages.success(
-				request,
-				"విన్నపం చేసిన ధన్యవాదాలు! మీ సమాచారం నిర్వాహక ధృవీకరణ తర్వాత ప్రచురించబడుతుంది.",
-			)
-			return render(request, "updates/submit_news.html", {"form": NewsSubmissionForm()})
+
+			if auto_publish:
+				messages.success(request, "మీ వార్త విజయవంతంగా ప్రచురించబడింది.")
+			else:
+				messages.success(request, "విన్నపం చేసిన ధన్యవాదాలు! మీ సమాచారం నిర్వాహక ధృవీకరణ తర్వాత ప్రచురించబడుతుంది.")
+
+			return redirect("updates:list")
 		else:
 			messages.error(request, "దయచేసి ఫారమ్‌లోని తప్పులను సరిచేయండి.")
 	else:

@@ -1,10 +1,14 @@
 from datetime import timedelta
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
 from .models import Meeting
+
+
+User = get_user_model()
 
 
 class MeetingViewsTests(TestCase):
@@ -14,6 +18,13 @@ class MeetingViewsTests(TestCase):
 		self.assertEqual(response.url, reverse("meetings:view"))
 
 	def test_submit_meeting_creates_published_record(self):
+		user = User.objects.create_user(
+			mobile_number="9000099999",
+			password="test-pass-123",
+			role="believer",
+		)
+		self.client.force_login(user)
+
 		payload = {
 			"title": "Youth Prayer Summit",
 			"description": "Prayer and worship gathering.",
@@ -31,6 +42,11 @@ class MeetingViewsTests(TestCase):
 		self.assertEqual(response.status_code, 302)
 		meeting = Meeting.objects.get(title="Youth Prayer Summit")
 		self.assertTrue(meeting.is_published)
+
+	def test_submit_meeting_requires_login(self):
+		response = self.client.get(reverse("meetings:submit"))
+		self.assertEqual(response.status_code, 302)
+		self.assertIn(reverse("accounts:login"), response.url)
 
 	def test_view_meetings_shows_only_published_upcoming(self):
 		today = timezone.localdate()

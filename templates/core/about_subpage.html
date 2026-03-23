@@ -58,6 +58,101 @@
                     </div>
                 {% endif %}
 
+                {% if section_data.image %}
+                    <div class="about-image-display">
+                        <img src="{{ section_data.image.url }}" alt="{{ section_data.title_te|default:section_data.title_en }}" loading="lazy" style="max-width: 100%; height: auto; border-radius: 8px; margin: 1.5rem 0;">
+                    </div>
+                {% endif %}
+
+                {% if section_data.pdf %}
+                    <div class="about-pdf-download">
+                        <a href="{{ section_data.pdf.url }}" target="_blank" rel="noopener" class="button button-secondary">
+                            📄 PDF డౌన్‌లోడ్ చేయండి
+                        </a>
+                    </div>
+                {% endif %}
+
+                {% if section == 'share-christian-news' %}
+                    <div class="news-submission-section" style="margin: 2rem 0; padding: 1.5rem; background: #f0f8ff; border-radius: 8px; border-left: 4px solid #1e40af;">
+                        <h3>📰 Submit Christian News</h3>
+                        <p>Share Christian news and Christian community updates with readers. Fill the form below to submit your Christian news article.</p>
+                        
+                        {% if user.is_authenticated %}
+                            <form method="post" action="{% url 'updates:submit' %}" enctype="multipart/form-data" style="margin-top: 1.5rem;">
+                                {% csrf_token %}
+                                
+                                <div class="form-row" style="margin-bottom: 1rem;">
+                                    <label for="news_title">📝 Christian News Title *</label>
+                                    <input type="text" id="news_title" name="title" class="form-input" placeholder="Enter Christian news title" required />
+                                </div>
+
+                                <div class="form-row" style="margin-bottom: 1rem;">
+                                    <label for="news_image">📷 Upload News Photo (Optional)</label>
+                                    <input type="file" id="news_image" name="image" accept="image/*" class="form-input" />
+                                    <small>Upload a photo related to the Christian news (PNG, JPG)</small>
+                                </div>
+
+                                <div class="form-row" style="margin-bottom: 1rem;">
+                                    <label for="news_newspaper">📄 News Description (Which Paper) *</label>
+                                    <select id="news_newspaper" name="newspaper" class="form-select">
+                                        <option value="">--- Select Newspaper (Optional) ---</option>
+                                        <option value="andhra-jyothi">Andhra Jyothi</option>
+                                        <option value="eenadu">Eenadu</option>
+                                        <option value="sakshi">Sakshi</option>
+                                        <option value="deccan-chronicle">Deccan Chronicle</option>
+                                        <option value="the-hindu">The Hindu</option>
+                                        <option value="times-of-india">Times of India</option>
+                                        <option value="indian-express">Indian Express</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-row" style="margin-bottom: 1rem;">
+                                    <label for="news_category">🏷️ Select News Category *</label>
+                                    <select id="news_category" name="category" class="form-select" required>
+                                        <option value="">--- Select Category ---</option>
+                                        <option value="christian-media">News related to Christian media</option>
+                                        <option value="honorarium">News related to Honorarium, Government schemes</option>
+                                        <option value="christians">News related to Christians</option>
+                                        <option value="general">General News</option>
+                                        <option value="medical-council">News related to Delhi Christian Medical Council</option>
+                                        <option value="education">Education related</option>
+                                        <option value="training">Training related</option>
+                                        <option value="jobs">Jobs related</option>
+                                        <option value="health">Health related</option>
+                                        <option value="society">News related to problems in society</option>
+                                        <option value="dr-joseph">News about Dr. Joseph Prakash Mosiganti</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-row" style="margin-bottom: 1rem;">
+                                    <label for="news_summary">✍️ News Summary</label>
+                                    <textarea id="news_summary" name="summary" class="form-textarea" placeholder="Brief summary of the Christian news" rows="3"></textarea>
+                                </div>
+
+                                <div class="form-row" style="margin-bottom: 1rem;">
+                                    <label for="news_content">📋 News Content *</label>
+                                    <textarea id="news_content" name="content" class="form-textarea" placeholder="Full Christian news content" rows="6" required></textarea>
+                                </div>
+
+                                <div class="hero-actions">
+                                    <button type="submit" class="button button-primary">✅ Submit Christian News</button>
+                                    <button type="reset" class="button button-secondary">🔄 Clear Form</button>
+                                </div>
+                            </form>
+                        {% else %}
+                            <div style="margin-top: 1.5rem; padding: 1rem; background: #fff3cd; border-radius: 6px; border-left: 4px solid #ff9800;">
+                                <p><strong>⚠️ Registration Required</strong></p>
+                                <p>You must be registered and logged in to submit Christian news. Please:</p>
+                                <div style="margin-top: 1rem;">
+                                    <a href="{% url 'directory:register' %}" class="button button-secondary" style="margin-right: 0.5rem;">📝 Register Now</a>
+                                    <a href="{% url 'accounts:login' %}" class="button button-secondary">🔐 Login</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
                 {% if section == 'photo-gallery' %}
                     <div class="gallery-grid">
                         <div class="gallery-tile">సమాజ కార్యక్రమం</div>

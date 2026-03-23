@@ -8,13 +8,15 @@ from .models import NewsArticle
 class NewsArticleAdmin(admin.ModelAdmin):
 	list_display = (
 		"title",
+		"category",
+		"newspaper",
 		"published_at",
 		"is_published",
 		"is_featured",
 		"has_image",
 		"has_youtube_embed",
 	)
-	list_filter = ("is_published", "is_featured", "published_at")
+	list_filter = ("is_published", "is_featured", "category", "newspaper", "published_at")
 	prepopulated_fields = {"slug": ("title",)}
 	search_fields = ("title", "summary", "content", "image_url", "youtube_embed_url")
 	fields = (
@@ -25,6 +27,8 @@ class NewsArticleAdmin(admin.ModelAdmin):
 		"youtube_embed_url",
 		"summary",
 		"content",
+		"newspaper",
+		"category",
 		"published_at",
 		"is_published",
 		"is_featured",

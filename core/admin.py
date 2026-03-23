@@ -25,7 +25,7 @@ class AboutPageContentAdmin(admin.ModelAdmin):
 		(
 			"Content",
 			{
-				"fields": ("description", "points_text", "youtube_embed_url"),
+				"fields": ("description", "points_text", "youtube_embed_url", "image", "pdf"),
 			},
 		),
 		(

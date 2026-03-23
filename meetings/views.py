@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
@@ -7,6 +8,7 @@ from .forms import MeetingFilterForm, MeetingSubmissionForm
 from .models import Meeting
 
 
+@login_required(login_url="accounts:login")
 def submit_meeting(request):
 	if request.method == "POST":
 		form = MeetingSubmissionForm(request.POST, request.FILES)

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}JBAC | సమాచారం సమర్పించండి{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">వార్తలు</p>
+        <h1>సమాచారం సమర్పించండి</h1>
+        <p class="hero-text">ఈ ఫారం నమోదు చేసి ప్రవేశించిన సభ్యుల కోసం మాత్రమే అందుబాటులో ఉంటుంది.</p>
+        <p class="hero-text">చర్చి, క్రైస్తవ సేవల, ఆరోగ్య, విద్య, ఉద్యోగాల మరియు ఇతర ముఖ్యమైన సమాచారాన్ని ఈ ఫారమ్‌లో సమర్పించవచ్చు.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container split-layout">
+        <article class="form-card" data-reveal>
+            <h2>సమాచారం సమర్పణ ఫారం</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="form-errors">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="form-row">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}<p class="field-help">{{ field.help_text }}</p>{% endif %}
+                        {% for error in field.errors %}
+                            <p class="field-error">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <div class="hero-actions">
+                    <button class="button button-primary" type="submit">సమర్పించండి</button>
+                    <button class="button button-secondary" type="reset">రీసెట్</button>
+                </div>
+            </form>
+        </article>
+
+        <aside class="info-card" data-reveal>
+            <p class="panel-label">ముఖ్యం</p>
+            <ul class="check-list">
+                <li>ఫోటో అప్లోడ్ ఐచ్ఛికం, కానీ సమాచారాన్ని విజ్వలీకరణ చేయడానికి సహాయపడుతుంది.</li>
+                <li>న్యూస్‌పేపర్ ఎంపిక ఐచ్ఛికం - అటువంటి ఫిల్టర్ కోసం ఉపయోగించబడుతుంది.</li>
+                <li>సమాచార కేటగిరీ తప్పనిసరిగా ఎంచుకోవాలి, ఉపయోగకరమైన సంస్థకు సంబంధించిన సమాచారాన్ని చేర్చడానికి.</li>
+                <li>మీ సమాచారం నిర్వాహక ధృవీకరణ తర్వాత సార్వજనిక వెబ్‌సైట్‌లో ప్రచురించబడుతుంది.</li>
+                <li>క్రిస్టియన్, చర్చి, సమాజ సేవ సమాచారాన్ని ఆదరించండి.</li>
+            </ul>
+        </aside>
+    </div>
+</section>
+{% endblock %}

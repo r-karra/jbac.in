@@ -18,6 +18,18 @@ class AboutPageContent(models.Model):
 		blank=True,
 		help_text="Paste a YouTube watch/share/embed URL (e.g. https://youtu.be/... or https://www.youtube.com/watch?v=...).",
 	)
+	image = models.ImageField(
+		upload_to="core/about/",
+		blank=True,
+		null=True,
+		help_text="Upload an image related to this section (Christians, ministry work, etc.)",
+	)
+	pdf = models.FileField(
+		upload_to="core/about/",
+		blank=True,
+		null=True,
+		help_text="Upload a PDF document related to this section.",
+	)
 	sort_order = models.PositiveSmallIntegerField(default=10)
 	is_active = models.BooleanField(default=True)
 	created_at = models.DateTimeField(auto_now_add=True)

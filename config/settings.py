@@ -35,12 +35,31 @@ default_allowed_hosts = [
     "rkarra.pythonanywhere.com",
 ]
 
+# ...existing code...
+default_allowed_hosts = [
+    "127.0.0.1",
+    "localhost",
+    "rkarra.pythonanywhere.com",
+    "jbac-in.onrender.com",
+]
+
 SECRET_KEY = os.getenv("SECRET_KEY", "jbac-development-secret-key")
-DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
-ALLOWED_HOSTS = os.environ.get(
-    "DJANGO_ALLOWED_HOSTS",
-    "127.0.0.1,localhost,rkarra.pythonanywhere.com,jbac-in.onrender.com",
-).split(",")
+DEBUG = os.getenv("DJANGO_DEBUG", os.getenv("DEBUG", "False")).lower() == "true"
+
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv("ALLOWED_HOSTS", ",".join(default_allowed_hosts)).split(",")
+    if host.strip()
+]
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        "CSRF_TRUSTED_ORIGINS",
+        "https://jbac-in.onrender.com",
+    ).split(",")
+    if origin.strip()
+]
+# ...existing code...
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
 ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", ",".join(default_allowed_hosts)).split(",") if host.strip()]

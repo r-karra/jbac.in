@@ -1,1 +1,1 @@
-web: gunicorn jbac.wsgi:application
+web: gunicorn config.wsgi:application

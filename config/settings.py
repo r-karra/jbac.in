@@ -36,6 +36,11 @@ default_allowed_hosts = [
 ]
 
 SECRET_KEY = os.getenv("SECRET_KEY", "jbac-development-secret-key")
+DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
+ALLOWED_HOSTS = os.environ.get(
+    "DJANGO_ALLOWED_HOSTS",
+    "127.0.0.1,localhost,rkarra.pythonanywhere.com,jbac-in.onrender.com",
+).split(",")
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
 ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", ",".join(default_allowed_hosts)).split(",") if host.strip()]

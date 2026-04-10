@@ -181,3 +181,6 @@ If `DATABASE_URL` is not set, the project falls back to SQLite.
 - `/admin-dashboard/` admin operations dashboard (staff only)
 - `/api/stats/`, `/api/pastors/`, `/api/churches/`, `/api/news/` JSON APIs
 - `/admin/` Django admin
+
+- Hosted: [render.com](logged in using github(r-karra))
+- DB: [neon.tech](logged in with rajeshkarra.ai@gmail.com)

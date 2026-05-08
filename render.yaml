@@ -1,28 +1,28 @@
-services:
-  - type: web
-    name: jbac-in
-    runtime: python
-    pythonVersion: 3.12
-    plan: free
+# services:
+#   - type: web
+#     name: jbac-in
+#     runtime: python
+#     pythonVersion: 3.12
+#     plan: free
     
-    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
-    preDeployCommand: python manage.py migrate
-    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+#     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+#     preDeployCommand: python manage.py migrate
+#     startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
     
-    envVars:
-      - key: SECRET_KEY
-        generateValue: true
-      - key: DEBUG
-        value: "False"
-      - key: ALLOWED_HOSTS
-        value: jbac-llzt.onrender.com
-      - key: CSRF_TRUSTED_ORIGINS
-        value: https://jbac-llzt.onrender.com
-      - key: DATABASE_URL
-        sync: false
-      - key: DB_SSL_REQUIRE
-        value: "True"
-      - key: DB_SSLMODE
-        value: require
-      - key: DB_CONN_MAX_AGE
-        value: "600"
+#     envVars:
+#       - key: SECRET_KEY
+#         generateValue: true
+#       - key: DEBUG
+#         value: "False"
+#       - key: ALLOWED_HOSTS
+#         value: jbac-llzt.onrender.com
+#       - key: CSRF_TRUSTED_ORIGINS
+#         value: https://jbac-llzt.onrender.com
+#       - key: DATABASE_URL
+#         sync: false
+#       - key: DB_SSL_REQUIRE
+#         value: "True"
+#       - key: DB_SSLMODE
+#         value: require
+#       - key: DB_CONN_MAX_AGE
+#         value: "600"

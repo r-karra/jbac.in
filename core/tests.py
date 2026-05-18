@@ -2,7 +2,9 @@ from django.test import TestCase
 from django.core.management import call_command
 from django.urls import reverse
 
-from .models import AboutPageContent
+from accounts.models import User
+
+from .models import AboutPageContent, NavigationGroup
 
 
 class AboutSubpageTests(TestCase):
@@ -78,3 +80,36 @@ class AboutSeedCommandTests(TestCase):
 		call_command("seed_about_pages", reset=True)
 		self.assertFalse(AboutPageContent.objects.filter(section_slug="custom-temp").exists())
 		self.assertTrue(AboutPageContent.objects.filter(section_slug="about-us").exists())
+
+
+class NavigationTests(TestCase):
+	def setUp(self):
+		self.client = self.client_class()
+		self.group = NavigationGroup.objects.get(slug="services")
+		self.user = User.objects.create_user(
+			mobile_number="9000000010",
+			email="member10@example.com",
+			password="Secret123!",
+			role=User.Role.BELIEVER,
+		)
+
+	def test_guest_navigation_group_shows_login_prompt(self):
+		response = self.client.get(reverse("core:navigation-group", args=["services"]))
+		self.assertEqual(response.status_code, 200)
+		self.assertContains(response, "Hey user please login to get the more services")
+		self.assertContains(response, "Login")
+
+	def test_authenticated_navigation_group_shows_items(self):
+		self.client.force_login(self.user)
+		response = self.client.get(reverse("core:navigation-group", args=["services"]))
+		self.assertEqual(response.status_code, 200)
+		self.assertContains(response, "Christian Organizations")
+		self.assertContains(response, "Marriages")
+		self.assertContains(response, "Downloads")
+		self.assertNotContains(response, "Hey user please login to get the more services")
+
+	def test_home_page_exposes_services_and_account_labels(self):
+		response = self.client.get(reverse("core:home"))
+		self.assertEqual(response.status_code, 200)
+		self.assertContains(response, "Services")
+		self.assertContains(response, "Account")

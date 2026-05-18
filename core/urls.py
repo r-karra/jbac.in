@@ -7,6 +7,7 @@ from .views import (
     contact,
     dashboard,
     home,
+    navigation_group_page,
     privacy_policy,
     terms_conditions,
 )
@@ -18,6 +19,7 @@ urlpatterns = [
     path("about/", about, name="about"),
     path("about-us/", about_subpage, name="about-us"),
     path("about-us/<slug:section>/", about_subpage, name="about-section"),
+    path("menu/<slug:slug>/", navigation_group_page, name="navigation-group"),
     path("contact/", contact, name="contact"),
     path("privacy-policy/", privacy_policy, name="privacy-policy"),
     path("terms-and-conditions/", terms_conditions, name="terms-and-conditions"),

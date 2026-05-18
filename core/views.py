@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 
@@ -11,7 +12,7 @@ from directory.models import (
 	get_profile_for_user,
 )
 from updates.models import NewsArticle
-from .models import AboutPageContent
+from .models import AboutPageContent, NavigationGroup
 
 
 ABOUT_SECTIONS = {
@@ -193,6 +194,28 @@ def about_subpage(request, section=None):
 			"menu_items": menu_items,
 			"content_source": "admin" if content_rows else "default",
 			"has_selected_content": section_data is not None,
+		},
+	)
+
+
+def navigation_group_page(request, slug):
+	group = get_object_or_404(
+		NavigationGroup.objects.prefetch_related("items"),
+		slug=slug,
+		is_active=True,
+	)
+	items = group.items.filter(is_active=True)
+	if not request.user.is_authenticated:
+		items = items.none()
+	elif not request.user.is_staff:
+		items = items.filter(staff_only=False)
+	return render(
+		request,
+		"core/navigation_group.html",
+		{
+			"nav_group": group,
+			"nav_items": items,
+			"show_prompt": not request.user.is_authenticated,
 		},
 	)
 

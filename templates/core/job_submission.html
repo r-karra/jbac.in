@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Submit Job Listing | JBAC{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Services</p>
+        <h1>Post a Job Listing</h1>
+        <p class="hero-text">Share job opportunities with the Christian community.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container">
+        <div class="form-wrapper" data-reveal>
+            <form method="post" class="form-standard">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div class="form-group">
+                        {{ form.title }}
+                        {% if form.title.errors %}<small class="form-error">{{ form.title.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.category }}
+                        {% if form.category.errors %}<small class="form-error">{{ form.category.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.job_type }}
+                        {% if form.job_type.errors %}<small class="form-error">{{ form.job_type.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.experience_level }}
+                        {% if form.experience_level.errors %}<small class="form-error">{{ form.experience_level.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.description }}
+                        {% if form.description.errors %}<small class="form-error">{{ form.description.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.district }}
+                        {% if form.district.errors %}<small class="form-error">{{ form.district.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.state }}
+                        {% if form.state.errors %}<small class="form-error">{{ form.state.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.city_area }}
+                        {% if form.city_area.errors %}<small class="form-error">{{ form.city_area.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.salary_min }}
+                        {% if form.salary_min.errors %}<small class="form-error">{{ form.salary_min.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.salary_max }}
+                        {% if form.salary_max.errors %}<small class="form-error">{{ form.salary_max.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.company_name }}
+                        {% if form.company_name.errors %}<small class="form-error">{{ form.company_name.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.company_email }}
+                        {% if form.company_email.errors %}<small class="form-error">{{ form.company_email.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.company_phone }}
+                        {% if form.company_phone.errors %}<small class="form-error">{{ form.company_phone.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.company_website }}
+                        {% if form.company_website.errors %}<small class="form-error">{{ form.company_website.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.skills_required }}
+                        {% if form.skills_required.errors %}<small class="form-error">{{ form.skills_required.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.benefits }}
+                        {% if form.benefits.errors %}<small class="form-error">{{ form.benefits.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.application_link }}
+                        {% if form.application_link.errors %}<small class="form-error">{{ form.application_link.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.deadline }}
+                        {% if form.deadline.errors %}<small class="form-error">{{ form.deadline.errors }}</small>{% endif %}
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="button button-primary">Submit Job Listing</button>
+                    <a href="{% url 'core:dashboard' %}" class="button button-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Submit Business | JBAC{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Account</p>
+        <h1>Submit Business Information</h1>
+        <p class="hero-text">Share your business with the community.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container">
+        <div class="form-wrapper" data-reveal>
+            <form method="post" class="form-standard">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div class="form-group form-group-full">
+                        {{ form.business_name }}
+                        {% if form.business_name.errors %}<small class="form-error">{{ form.business_name.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.owner_name }}
+                        {% if form.owner_name.errors %}<small class="form-error">{{ form.owner_name.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.owner_contact }}
+                        {% if form.owner_contact.errors %}<small class="form-error">{{ form.owner_contact.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.district }}
+                        {% if form.district.errors %}<small class="form-error">{{ form.district.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.city_area }}
+                        {% if form.city_area.errors %}<small class="form-error">{{ form.city_area.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.website }}
+                        {% if form.website.errors %}<small class="form-error">{{ form.website.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.services_offered }}
+                        {% if form.services_offered.errors %}<small class="form-error">{{ form.services_offered.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.description }}
+                        {% if form.description.errors %}<small class="form-error">{{ form.description.errors }}</small>{% endif %}
+                    </div>
+                </div>
+                <button type="submit" class="button-primary">Submit Business</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

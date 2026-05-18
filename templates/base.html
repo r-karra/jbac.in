@@ -96,6 +96,16 @@
                         <a href="{% url 'core:navigation-group' group.slug %}">{{ group.display_title }}</a>
                     {% endif %}
                 {% endfor %}
+                {% if user.is_authenticated %}
+                    <hr style="margin: 10px 0;">
+                    <span style="display: block; padding: 10px 0; font-size: 0.9em;">నమస్కారం, {{ user.get_full_name|default:user.mobile_number }}</span>
+                    <a href="{% url 'core:dashboard' %}">ড్യాష్‌బోర్డ్</a>
+                    <a href="{% url 'accounts:logout' %}">లాగ్‌అవుట్</a>
+                {% else %}
+                    <hr style="margin: 10px 0;">
+                    <a href="{% url 'accounts:login' %}">ప్రవేశించండి</a>
+                    <a href="{% url 'directory:register' %}">నమోదు</a>
+                {% endif %}
             </nav>
         </div>
     </header>

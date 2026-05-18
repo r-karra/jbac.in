@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Submit Leader Information | JBAC{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Account</p>
+        <h1>Submit Leader Information</h1>
+        <p class="hero-text">Share your leadership experience with the community.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container">
+        <div class="form-wrapper" data-reveal>
+            <form method="post" class="form-standard">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div class="form-group">
+                        {{ form.name }}
+                        {% if form.name.errors %}<small class="form-error">{{ form.name.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.email }}
+                        {% if form.email.errors %}<small class="form-error">{{ form.email.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.phone }}
+                        {% if form.phone.errors %}<small class="form-error">{{ form.phone.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.experience }}
+                        {% if form.experience.errors %}<small class="form-error">{{ form.experience.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.interests }}
+                        {% if form.interests.errors %}<small class="form-error">{{ form.interests.errors }}</small>{% endif %}
+                    </div>
+                </div>
+                <button type="submit" class="button-primary">Submit Leader Information</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

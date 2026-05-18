@@ -165,3 +165,80 @@ def get_profile_for_user(user):
 	}
 	relation = profile_lookup.get(user.role)
 	return getattr(user, relation, None) if relation else None
+
+
+LEADER_ROLE_CHOICES = [
+	("pastor", "Pastor"),
+	("evangelist", "Evangelist"),
+	("bishop", "Bishop"),
+	("apostle", "Apostle"),
+	("missionary", "Missionary"),
+	("youth-leader", "Youth Leader"),
+	("worship-leader", "Worship Leader"),
+	("other", "Other"),
+]
+
+MARITAL_STATUS_CHOICES = [
+	("single", "Single"),
+	("married", "Married"),
+	("widowed", "Widowed"),
+	("divorced", "Divorced"),
+]
+
+
+class Leader(ApprovalFields):
+	user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="leader_profile", null=True, blank=True)
+	name = models.CharField(max_length=200)
+	role = models.CharField(max_length=50, choices=LEADER_ROLE_CHOICES)
+	district = models.CharField(max_length=100, choices=DISTRICT_CHOICES)
+	state = models.CharField(max_length=100, choices=STATE_CHOICES, default="Andhra Pradesh")
+	email = models.EmailField(blank=True)
+	phone = models.CharField(max_length=20, blank=True)
+	
+	organization_name = models.CharField(max_length=200, blank=True, help_text="Church/Organization name")
+	years_in_ministry = models.PositiveIntegerField(default=0)
+	biography = models.TextField(blank=True)
+	
+	image_url = models.URLField(blank=True)
+	posted_date = models.DateTimeField(auto_now_add=True)
+
+	class Meta:
+		ordering = ["name"]
+		verbose_name_plural = "Leaders"
+
+	def __str__(self):
+		return f"{self.name} ({self.get_role_display()})"
+
+
+class Marriage(ApprovalFields):
+	submitted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="marriage_profiles")
+	
+	name = models.CharField(max_length=200)
+	gender = models.CharField(max_length=10, choices=[("male", "Male"), ("female", "Female"), ("other", "Other")])
+	date_of_birth = models.DateField()
+	marital_status = models.CharField(max_length=20, choices=MARITAL_STATUS_CHOICES)
+	
+	district = models.CharField(max_length=100, choices=DISTRICT_CHOICES)
+	state = models.CharField(max_length=100, choices=STATE_CHOICES, default="Andhra Pradesh")
+	
+	email = models.EmailField()
+	phone = models.CharField(max_length=20)
+	
+	occupation = models.CharField(max_length=200, blank=True)
+	education = models.CharField(max_length=200, blank=True)
+	
+	about_me = models.TextField(blank=True)
+	interests = models.TextField(blank=True, help_text="Comma-separated interests")
+	
+	looking_for = models.TextField(blank=True, help_text="Describe what you're looking for in a partner")
+	
+	image_url = models.URLField(blank=True)
+	phone_visible = models.BooleanField(default=False)
+	
+	posted_date = models.DateTimeField(auto_now_add=True)
+
+	class Meta:
+		ordering = ["-posted_date"]
+
+	def __str__(self):
+		return f"{self.name} ({self.get_gender_display()})"

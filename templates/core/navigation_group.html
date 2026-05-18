@@ -8,7 +8,7 @@
         <p class="eyebrow">{{ nav_group.display_title }}</p>
         <h1>{{ nav_group.display_title }}</h1>
         {% if show_prompt %}
-            <p class="hero-text">{{ nav_group.prompt_message }}</p>
+            <p class="hero-text">{{ login_message|default:nav_group.prompt_message }}</p>
         {% else %}
             <p class="hero-text">Choose a submenu item below.</p>
         {% endif %}
@@ -20,12 +20,12 @@
         {% if show_prompt %}
             <div class="nav-prompt-wrap" data-reveal>
                 <div class="nav-prompt-card">
-                    <div class="nav-prompt-icon" aria-hidden="true">i</div>
+                    <div class="nav-prompt-icon" aria-hidden="true">ℹ️</div>
                     <h2>{{ nav_group.prompt_title }}</h2>
-                    <p>{{ nav_group.prompt_message }}</p>
+                    <p>{{ login_message|default:nav_group.prompt_message }}</p>
                     <div class="hero-actions">
-                        <a class="button button-primary" href="{% url 'accounts:login' %}">Login</a>
-                        <a class="button button-secondary" href="{% url 'directory:register' %}">Register</a>
+                        <a class="button button-primary" href="{% url 'accounts:login' %}">లాగిన్ చేయండి</a>
+                        <a class="button button-secondary" href="{% url 'directory:register' %}">నమోదు చేయండి</a>
                     </div>
                 </div>
             </div>

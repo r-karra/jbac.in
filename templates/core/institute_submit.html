@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Submit Institute | JBAC{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Account</p>
+        <h1>Submit Institute Information</h1>
+        <p class="hero-text">Share your educational institution with the community.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container">
+        <div class="form-wrapper" data-reveal>
+            <form method="post" class="form-standard">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div class="form-group form-group-full">
+                        {{ form.institute_name }}
+                        {% if form.institute_name.errors %}<small class="form-error">{{ form.institute_name.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.principal_name }}
+                        {% if form.principal_name.errors %}<small class="form-error">{{ form.principal_name.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.principal_contact }}
+                        {% if form.principal_contact.errors %}<small class="form-error">{{ form.principal_contact.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.district }}
+                        {% if form.district.errors %}<small class="form-error">{{ form.district.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.city_area }}
+                        {% if form.city_area.errors %}<small class="form-error">{{ form.city_area.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.degrees_offered }}
+                        {% if form.degrees_offered.errors %}<small class="form-error">{{ form.degrees_offered.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.specializations }}
+                        {% if form.specializations.errors %}<small class="form-error">{{ form.specializations.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.description }}
+                        {% if form.description.errors %}<small class="form-error">{{ form.description.errors }}</small>{% endif %}
+                    </div>
+                </div>
+                <button type="submit" class="button-primary">Submit Institute</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

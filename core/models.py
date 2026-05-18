@@ -2,6 +2,7 @@ from urllib.parse import parse_qs, urlparse
 
 from django.db import models
 from django.urls import NoReverseMatch, reverse
+from django.conf import settings
 
 
 class AboutPageContent(models.Model):
@@ -139,3 +140,68 @@ class NavigationItem(models.Model):
 
 	def __str__(self):
 		return f"{self.title_en} -> {self.group.title_en}"
+
+
+PRAYER_CATEGORY_CHOICES = [
+	("health", "Health & Healing"),
+	("family", "Family"),
+	("finances", "Finances"),
+	("work-study", "Work & Studies"),
+	("spiritual", "Spiritual Growth"),
+	("protection", "Protection"),
+	("gratitude", "Gratitude & Praise"),
+	("guidance", "Guidance"),
+	("community", "Community"),
+	("other", "Other"),
+]
+
+
+class Prayer(models.Model):
+	submitted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="prayers")
+	title = models.CharField(max_length=200)
+	description = models.TextField()
+	category = models.CharField(max_length=30, choices=PRAYER_CATEGORY_CHOICES)
+	is_public = models.BooleanField(default=True)
+	
+	submitted_date = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+
+	class Meta:
+		ordering = ["-submitted_date"]
+
+	def __str__(self):
+		return f"{self.title} - {self.get_category_display()}"
+
+
+class GalleryCategory(models.Model):
+	name = models.CharField(max_length=100, unique=True)
+	description = models.TextField(blank=True)
+	sort_order = models.PositiveSmallIntegerField(default=10)
+	is_active = models.BooleanField(default=True)
+
+	class Meta:
+		verbose_name_plural = "Gallery Categories"
+		ordering = ["sort_order", "name"]
+
+	def __str__(self):
+		return self.name
+
+
+class GalleryImage(models.Model):
+	category = models.ForeignKey(GalleryCategory, on_delete=models.CASCADE, related_name="images")
+	title = models.CharField(max_length=200, blank=True)
+	description = models.TextField(blank=True)
+	image = models.ImageField(upload_to="gallery/")
+	thumbnail = models.ImageField(upload_to="gallery/thumbnails/", blank=True, null=True)
+	
+	uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+	uploaded_date = models.DateTimeField(auto_now_add=True)
+	sort_order = models.PositiveSmallIntegerField(default=10)
+	is_active = models.BooleanField(default=True)
+
+	class Meta:
+		ordering = ["sort_order", "-uploaded_date"]
+		verbose_name_plural = "Gallery Images"
+
+	def __str__(self):
+		return f"{self.title} ({self.category.name})"

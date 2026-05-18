@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import AboutPageContent, NavigationGroup, NavigationItem
+from .models import AboutPageContent, NavigationGroup, NavigationItem, Prayer, GalleryCategory, GalleryImage
 
 
 @admin.register(AboutPageContent)
@@ -113,6 +113,71 @@ class NavigationItemAdmin(admin.ModelAdmin):
 			"Display rules",
 			{
 				"fields": ("sort_order", "requires_auth", "staff_only", "open_in_new_tab", "is_active"),
+			},
+		),
+	)
+
+
+@admin.register(Prayer)
+class PrayerAdmin(admin.ModelAdmin):
+	list_display = ("title", "category", "submitted_by", "is_public", "submitted_date")
+	list_filter = ("category", "is_public", "submitted_date")
+	search_fields = ("title", "description", "submitted_by__email")
+	readonly_fields = ("submitted_date", "updated_at")
+	fieldsets = (
+		(
+			"Prayer Details",
+			{
+				"fields": ("title", "description", "category")
+			},
+		),
+		(
+			"Meta",
+			{
+				"fields": ("submitted_by", "is_public", "submitted_date", "updated_at")
+			},
+		),
+	)
+
+
+@admin.register(GalleryCategory)
+class GalleryCategoryAdmin(admin.ModelAdmin):
+	list_display = ("name", "sort_order", "is_active")
+	list_filter = ("is_active",)
+	search_fields = ("name", "description")
+	ordering = ("sort_order", "name")
+
+
+class GalleryImageInline(admin.TabularInline):
+	model = GalleryImage
+	extra = 0
+	fields = ("title", "description", "image", "sort_order", "is_active")
+
+
+@admin.register(GalleryImage)
+class GalleryImageAdmin(admin.ModelAdmin):
+	list_display = ("title", "category", "uploaded_by", "uploaded_date", "is_active")
+	list_filter = ("category", "is_active", "uploaded_date")
+	search_fields = ("title", "description", "category__name")
+	readonly_fields = ("uploaded_date",)
+	ordering = ("sort_order", "-uploaded_date")
+	fieldsets = (
+		(
+			"Image Details",
+			{
+				"fields": ("category", "title", "description")
+			},
+		),
+		(
+			"Media",
+			{
+				"fields": ("image", "thumbnail")
+			},
+		),
+		(
+			"Meta",
+			{
+				"fields": ("uploaded_by", "uploaded_date", "sort_order", "is_active")
 			},
 		),
 	)

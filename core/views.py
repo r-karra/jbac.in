@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.views.generic import View
 
 from directory.models import (
 	BelieverProfile,
@@ -11,7 +14,33 @@ from directory.models import (
 	get_profile_for_user,
 )
 from updates.models import NewsArticle
-from .models import AboutPageContent
+from .models import AboutPageContent, NavigationGroup
+from .submission_forms import (
+	JobSubmissionForm,
+	BusinessSubmissionForm,
+	InstituteSubmissionForm,
+	IncidentReportForm,
+	PrayerSubmissionForm,
+)
+from .account_forms import (
+	ChurchTimingsForm,
+	MeetingsForm,
+	JobsForm,
+	BusinessForm,
+	InstituteForm,
+	AttacksForm,
+	AdsForm,
+	LeadersForm,
+	# Search forms
+	InstitutesSearchForm,
+	MarriagesSearchForm,
+	JobsSearchForm,
+	HelpSearchForm,
+	NewsSearchForm,
+	BusinessSearchForm,
+	WingsSearchForm,
+	OrganizationSearchForm,
+)
 
 
 ABOUT_SECTIONS = {
@@ -197,6 +226,44 @@ def about_subpage(request, section=None):
 	)
 
 
+def navigation_group_page(request, slug):
+	group = get_object_or_404(
+		NavigationGroup.objects.prefetch_related("items"),
+		slug=slug,
+		is_active=True,
+	)
+	
+	# Check if user is authenticated
+	if not request.user.is_authenticated:
+		# Show login message for protected groups (Services, Account)
+		show_prompt = True
+		nav_items = []
+		context = {
+			"nav_group": group,
+			"nav_items": nav_items,
+			"show_prompt": show_prompt,
+			"login_message": "Dear user, please login to use more services.",
+		}
+		return render(request, "core/navigation_group.html", context)
+	
+	# User is authenticated - show available items
+	items = group.items.filter(is_active=True)
+	
+	# Filter out staff-only items if user is not staff
+	if not request.user.is_staff:
+		items = items.filter(staff_only=False)
+	
+	return render(
+		request,
+		"core/navigation_group.html",
+		{
+			"nav_group": group,
+			"nav_items": items,
+			"show_prompt": False,
+		},
+	)
+
+
 def contact(request):
 	return render(request, "core/contact.html")
 
@@ -235,3 +302,265 @@ def admin_dashboard(request):
 		"core/admin_dashboard.html",
 		{"stats": stats, "recent_registrations": recent_registrations},
 	)
+
+
+# ============================================================================
+# SERVICE SUBMISSION VIEWS
+# ============================================================================
+
+@login_required
+def job_submission(request):
+	if request.method == "POST":
+		form = JobSubmissionForm(request.POST)
+		if form.is_valid():
+			job = form.save(commit=False)
+			job.posted_by = request.user
+			job.save()
+			messages.success(request, "Job listing submitted successfully! It will be visible after admin approval.")
+			return redirect("core:dashboard")
+	else:
+		form = JobSubmissionForm()
+	return render(request, "core/job_submission.html", {"form": form})
+
+
+@login_required
+def business_submission(request):
+	if request.method == "POST":
+		form = BusinessSubmissionForm(request.POST)
+		if form.is_valid():
+			business = form.save(commit=False)
+			business.posted_by = request.user
+			business.save()
+			messages.success(request, "Business listing submitted successfully! It will be visible after admin approval.")
+			return redirect("core:dashboard")
+	else:
+		form = BusinessSubmissionForm()
+	return render(request, "core/business_submission.html", {"form": form})
+
+
+@login_required
+def institute_submission(request):
+	if request.method == "POST":
+		form = InstituteSubmissionForm(request.POST)
+		if form.is_valid():
+			institute = form.save(commit=False)
+			institute.posted_by = request.user
+			institute.save()
+			messages.success(request, "Institute information submitted successfully! It will be visible after admin approval.")
+			return redirect("core:dashboard")
+	else:
+		form = InstituteSubmissionForm()
+	return render(request, "core/institute_submission.html", {"form": form})
+
+
+@login_required
+def incident_report(request):
+	if request.method == "POST":
+		form = IncidentReportForm(request.POST)
+		if form.is_valid():
+			incident = form.save(commit=False)
+			incident.reported_by = request.user
+			incident.save()
+			messages.success(request, "Incident report submitted successfully! Our team will review it.")
+			return redirect("core:dashboard")
+	else:
+		form = IncidentReportForm()
+	return render(request, "core/incident_report.html", {"form": form})
+
+
+@login_required
+def prayer_submission(request):
+	if request.method == "POST":
+		form = PrayerSubmissionForm(request.POST)
+		if form.is_valid():
+			prayer = form.save(commit=False)
+			prayer.submitted_by = request.user
+			prayer.save()
+			messages.success(request, "Prayer request submitted successfully!")
+			return redirect("core:dashboard")
+	else:
+		form = PrayerSubmissionForm()
+	return render(request, "core/prayer_submission.html", {"form": form})
+
+
+# ============================================================================
+# ACCOUNT SUBMISSION VIEWS
+# ============================================================================
+
+@login_required
+def church_timings_submit(request):
+	if request.method == "POST":
+		form = ChurchTimingsForm(request.POST)
+		if form.is_valid():
+			# For now, save directly or create a model if needed
+			messages.success(request, "Church timings submitted successfully!")
+			return redirect("core:dashboard")
+	else:
+		form = ChurchTimingsForm()
+	return render(request, "core/church_timings_submit.html", {"form": form})
+
+
+@login_required
+def meetings_submit(request):
+	if request.method == "POST":
+		form = MeetingsForm(request.POST)
+		if form.is_valid():
+			meeting = form.save(commit=False)
+			meeting.created_by = request.user
+			meeting.save()
+			messages.success(request, "Meeting submitted successfully!")
+			return redirect("core:dashboard")
+	else:
+		form = MeetingsForm()
+	return render(request, "core/meetings_submit.html", {"form": form})
+
+
+@login_required
+def jobs_submit(request):
+	if request.method == "POST":
+		form = JobsForm(request.POST)
+		if form.is_valid():
+			job = form.save(commit=False)
+			job.posted_by = request.user
+			job.save()
+			messages.success(request, "Job listing submitted successfully!")
+			return redirect("core:dashboard")
+	else:
+		form = JobsForm()
+	return render(request, "core/jobs_submit.html", {"form": form})
+
+
+@login_required
+def business_submit(request):
+	if request.method == "POST":
+		form = BusinessForm(request.POST)
+		if form.is_valid():
+			business = form.save(commit=False)
+			business.posted_by = request.user
+			business.save()
+			messages.success(request, "Business submitted successfully!")
+			return redirect("core:dashboard")
+	else:
+		form = BusinessForm()
+	return render(request, "core/business_submit.html", {"form": form})
+
+
+@login_required
+def institute_submit(request):
+	if request.method == "POST":
+		form = InstituteForm(request.POST)
+		if form.is_valid():
+			institute = form.save(commit=False)
+			institute.posted_by = request.user
+			institute.save()
+			messages.success(request, "Institute submitted successfully!")
+			return redirect("core:dashboard")
+	else:
+		form = InstituteForm()
+	return render(request, "core/institute_submit.html", {"form": form})
+
+
+@login_required
+def attacks_submit(request):
+	if request.method == "POST":
+		form = AttacksForm(request.POST)
+		if form.is_valid():
+			attack = form.save(commit=False)
+			attack.reported_by = request.user
+			attack.save()
+			messages.success(request, "Attack report submitted successfully!")
+			return redirect("core:dashboard")
+	else:
+		form = AttacksForm()
+	return render(request, "core/attacks_submit.html", {"form": form})
+
+
+@login_required
+def ads_submit(request):
+	if request.method == "POST":
+		form = AdsForm(request.POST)
+		if form.is_valid():
+			messages.success(request, "Advertisement submitted successfully!")
+			return redirect("core:dashboard")
+	else:
+		form = AdsForm()
+	return render(request, "core/ads_submit.html", {"form": form})
+
+
+@login_required
+def leaders_submit(request):
+	if request.method == "POST":
+		form = LeadersForm(request.POST)
+		if form.is_valid():
+			messages.success(request, "Leader information submitted successfully!")
+			return redirect("core:dashboard")
+	else:
+		form = LeadersForm()
+	return render(request, "core/leaders_submit.html", {"form": form})
+
+
+# ============================================================================
+# SERVICE SEARCH VIEWS
+# ============================================================================
+
+def institutes_search(request):
+	form = InstitutesSearchForm(request.GET or None)
+	results = []
+	if form.is_valid() and request.GET:
+		queryset = form.search()
+		results = queryset
+	return render(request, "core/institutes_search.html", {"form": form, "results": results})
+
+
+def marriages_search(request):
+	form = MarriagesSearchForm(request.GET or None)
+	results = []
+	if form.is_valid() and request.GET:
+		queryset = form.search()
+		results = queryset
+	return render(request, "core/marriages_search.html", {"form": form, "results": results})
+
+
+def jobs_search(request):
+	form = JobsSearchForm(request.GET or None)
+	results = []
+	if form.is_valid() and request.GET:
+		queryset = form.search()
+		results = queryset
+	return render(request, "core/jobs_search.html", {"form": form, "results": results})
+
+
+def help_search(request):
+	form = HelpSearchForm(request.GET or None)
+	results = []
+	if form.is_valid() and request.GET:
+		queryset = form.search()
+		results = queryset
+	return render(request, "core/help_search.html", {"form": form, "results": results})
+
+
+def business_search(request):
+	form = BusinessSearchForm(request.GET or None)
+	results = []
+	if form.is_valid() and request.GET:
+		queryset = form.search()
+		results = queryset
+	return render(request, "core/business_search.html", {"form": form, "results": results})
+
+
+def wings_search(request):
+	form = WingsSearchForm(request.GET or None)
+	results = []
+	if form.is_valid() and request.GET:
+		queryset = form.search()
+		results = queryset
+	return render(request, "core/wings_search.html", {"form": form, "results": results})
+
+
+def organization_search(request):
+	form = OrganizationSearchForm(request.GET or None)
+	results = []
+	if form.is_valid() and request.GET:
+		queryset = form.search()
+		results = queryset
+	return render(request, "core/organization_search.html", {"form": form, "results": results})

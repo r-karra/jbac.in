@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import AboutPageContent
+from .models import AboutPageContent, NavigationGroup, NavigationItem, Prayer, GalleryCategory, GalleryImage
 
 
 @admin.register(AboutPageContent)
@@ -32,6 +32,152 @@ class AboutPageContentAdmin(admin.ModelAdmin):
 			"Visibility",
 			{
 				"fields": ("sort_order", "is_active"),
+			},
+		),
+	)
+
+
+class NavigationItemInline(admin.TabularInline):
+	model = NavigationItem
+	extra = 0
+	fields = (
+		"title_te",
+		"title_en",
+		"url_name",
+		"url_path",
+		"sort_order",
+		"requires_auth",
+		"staff_only",
+		"open_in_new_tab",
+		"is_active",
+	)
+	show_change_link = True
+
+
+@admin.register(NavigationGroup)
+class NavigationGroupAdmin(admin.ModelAdmin):
+	list_display = ("slug", "title_en", "sort_order", "is_active", "updated_at")
+	list_filter = ("is_active",)
+	search_fields = ("slug", "title_en", "title_te", "prompt_title_en", "prompt_title_te")
+	ordering = ("sort_order", "title_en")
+	inlines = (NavigationItemInline,)
+	fieldsets = (
+		(
+			"Titles",
+			{
+				"fields": (
+					"slug",
+					"title_te",
+					"title_en",
+					"prompt_title_te",
+					"prompt_title_en",
+				),
+			},
+		),
+		(
+			"Prompt text",
+			{
+				"fields": ("prompt_message_te", "prompt_message_en"),
+			},
+		),
+		(
+			"Visibility",
+			{
+				"fields": ("sort_order", "is_active"),
+			},
+		),
+	)
+
+
+@admin.register(NavigationItem)
+class NavigationItemAdmin(admin.ModelAdmin):
+	list_display = ("title_en", "group", "sort_order", "requires_auth", "staff_only", "is_active", "updated_at")
+	list_filter = ("is_active", "requires_auth", "staff_only", "group")
+	search_fields = ("title_en", "title_te", "url_name", "url_path", "group__title_en", "group__slug")
+	ordering = ("group__sort_order", "sort_order", "title_en")
+	fieldsets = (
+		(
+			"Menu item",
+			{
+				"fields": (
+					"group",
+					"title_te",
+					"title_en",
+					"url_name",
+					"url_kwargs",
+					"url_path",
+				),
+			},
+		),
+		(
+			"Display rules",
+			{
+				"fields": ("sort_order", "requires_auth", "staff_only", "open_in_new_tab", "is_active"),
+			},
+		),
+	)
+
+
+@admin.register(Prayer)
+class PrayerAdmin(admin.ModelAdmin):
+	list_display = ("title", "category", "submitted_by", "is_public", "submitted_date")
+	list_filter = ("category", "is_public", "submitted_date")
+	search_fields = ("title", "description", "submitted_by__email")
+	readonly_fields = ("submitted_date", "updated_at")
+	fieldsets = (
+		(
+			"Prayer Details",
+			{
+				"fields": ("title", "description", "category")
+			},
+		),
+		(
+			"Meta",
+			{
+				"fields": ("submitted_by", "is_public", "submitted_date", "updated_at")
+			},
+		),
+	)
+
+
+@admin.register(GalleryCategory)
+class GalleryCategoryAdmin(admin.ModelAdmin):
+	list_display = ("name", "sort_order", "is_active")
+	list_filter = ("is_active",)
+	search_fields = ("name", "description")
+	ordering = ("sort_order", "name")
+
+
+class GalleryImageInline(admin.TabularInline):
+	model = GalleryImage
+	extra = 0
+	fields = ("title", "description", "image", "sort_order", "is_active")
+
+
+@admin.register(GalleryImage)
+class GalleryImageAdmin(admin.ModelAdmin):
+	list_display = ("title", "category", "uploaded_by", "uploaded_date", "is_active")
+	list_filter = ("category", "is_active", "uploaded_date")
+	search_fields = ("title", "description", "category__name")
+	readonly_fields = ("uploaded_date",)
+	ordering = ("sort_order", "-uploaded_date")
+	fieldsets = (
+		(
+			"Image Details",
+			{
+				"fields": ("category", "title", "description")
+			},
+		),
+		(
+			"Media",
+			{
+				"fields": ("image", "thumbnail")
+			},
+		),
+		(
+			"Meta",
+			{
+				"fields": ("uploaded_by", "uploaded_date", "sort_order", "is_active")
 			},
 		),
 	)

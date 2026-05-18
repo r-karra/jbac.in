@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Report Attack Incident | JBAC{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Account</p>
+        <h1>Report Attack Incident</h1>
+        <p class="hero-text">Report incidents or attacks affecting the Christian community.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container">
+        <div class="form-wrapper" data-reveal>
+            <form method="post" class="form-standard">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div class="form-group form-group-full">
+                        {{ form.title }}
+                        {% if form.title.errors %}<small class="form-error">{{ form.title.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.incident_type }}
+                        {% if form.incident_type.errors %}<small class="form-error">{{ form.incident_type.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.date }}
+                        {% if form.date.errors %}<small class="form-error">{{ form.date.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.location }}
+                        {% if form.location.errors %}<small class="form-error">{{ form.location.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.district }}
+                        {% if form.district.errors %}<small class="form-error">{{ form.district.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.victim_details }}
+                        {% if form.victim_details.errors %}<small class="form-error">{{ form.victim_details.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.attacker_details }}
+                        {% if form.attacker_details.errors %}<small class="form-error">{{ form.attacker_details.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.evidence }}
+                        {% if form.evidence.errors %}<small class="form-error">{{ form.evidence.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.description }}
+                        {% if form.description.errors %}<small class="form-error">{{ form.description.errors }}</small>{% endif %}
+                    </div>
+                </div>
+                <button type="submit" class="button-primary">Submit Report</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Submit Church Timings | JBAC{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Account</p>
+        <h1>Submit Church Timings</h1>
+        <p class="hero-text">Share your church service timings with the community.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container">
+        <div class="form-wrapper" data-reveal>
+            <form method="post" class="form-standard">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div class="form-group form-group-full">
+                        {{ form.service_name }}
+                        {% if form.service_name.errors %}<small class="form-error">{{ form.service_name.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.day }}
+                        {% if form.day.errors %}<small class="form-error">{{ form.day.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.time_start }}
+                        {% if form.time_start.errors %}<small class="form-error">{{ form.time_start.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.time_end }}
+                        {% if form.time_end.errors %}<small class="form-error">{{ form.time_end.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.description }}
+                        {% if form.description.errors %}<small class="form-error">{{ form.description.errors }}</small>{% endif %}
+                    </div>
+                </div>
+                <button type="submit" class="button-primary">Submit Church Timings</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

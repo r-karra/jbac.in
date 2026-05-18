@@ -33,6 +33,8 @@ default_allowed_hosts = [
     "127.0.0.1",
     "localhost",
     "rkarra.pythonanywhere.com",
+    "*.github.dev",  # GitHub Codespaces
+    "*.app.github.dev",  # GitHub Codespaces app domain
 ]
 
 # ...existing code...
@@ -63,7 +65,19 @@ CSRF_TRUSTED_ORIGINS = [
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
 ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", ",".join(default_allowed_hosts)).split(",") if host.strip()]
-CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if origin.strip()]
+
+# CSRF Configuration
+default_csrf_trusted = [
+    "https://*.github.dev",
+    "https://*.app.github.dev",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.getenv("CSRF_TRUSTED_ORIGINS", ",".join(default_csrf_trusted)).split(",") if origin.strip()]
+
+# Allow CSRF cookie over HTTP in development
+CSRF_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript access if needed
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -80,6 +94,10 @@ INSTALLED_APPS = [
     "api",
     "meetings",
     "songs",
+    "jobs",
+    "businesses",
+    "institutes",
+    "incidents",
 ]
 
 MIDDLEWARE = [
@@ -106,6 +124,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "core.context_processors.navigation_groups",
             ],
         },
     },

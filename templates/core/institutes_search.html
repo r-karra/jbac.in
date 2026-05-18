@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Institutes | JBAC{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Services</p>
+        <h1>Search Institutes</h1>
+        <p class="hero-text">Find educational institutions in your area.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container">
+        <div class="form-wrapper" data-reveal>
+            <form method="get" class="form-standard">
+                <div class="form-grid">
+                    <div class="form-group">
+                        {{ form.district }}
+                        {% if form.district.errors %}<small class="form-error">{{ form.district.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.state }}
+                        {% if form.state.errors %}<small class="form-error">{{ form.state.errors }}</small>{% endif %}
+                    </div>
+                </div>
+                <button type="submit" class="button-primary">Search Institutes</button>
+            </form>
+        </div>
+
+        {% if results %}
+        <div class="results-container" data-reveal>
+            <h2>Search Results</h2>
+            <div class="results-list">
+                {% for result in results %}
+                <div class="result-card">
+                    <h3>{{ result.institute_name }}</h3>
+                    <p><strong>Principal:</strong> {{ result.principal_name }}</p>
+                    <p><strong>Location:</strong> {{ result.city_area }}, {{ result.district }}</p>
+                    <p><strong>Contact:</strong> {{ result.principal_contact }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

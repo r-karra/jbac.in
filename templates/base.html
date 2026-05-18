@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="nav-dropdown">
-                    <a class="nav-dropdown-trigger" data-nav-dropdown-trigger aria-expanded="false" href="{% url 'songs:search' %}">పాటలు & పుస్తకాలు</a>
+                    <a class="nav-dropdown-trigger" data-nav-dropdown-trigger aria-expanded="false" href="{% url 'songs:search' %}">పాటలు &amp; పుస్తకాలు</a>
                     <div class="submenu-panel">
                         <a href="{% url 'songs:category' 'telugu' %}">తెలుగు పాటలు</a>
                         <a href="{% url 'songs:category' 'hymns' %}">హిమ్స్</a>
@@ -80,14 +80,31 @@
                     </div>
                 </div>
                 <a href="{% url 'core:contact' %}">సంప్రదించండి</a>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'core:dashboard' %}">డాష్‌బోర్డ్</a>
-                    {% if user.is_staff %}
-                        <a href="{% url 'core:admin-dashboard' %}">నిర్వాహక డాష్‌బోర్డ్</a>
+                {% for group in navigation_groups %}
+                    {% if user.is_authenticated %}
+                        <div class="nav-dropdown">
+                            <a class="nav-dropdown-trigger{% if request.resolver_match.url_name == 'navigation-group' and request.resolver_match.kwargs.slug == group.slug %} nav-active{% endif %}" data-nav-dropdown-trigger aria-expanded="false" href="{% url 'core:navigation-group' group.slug %}">{{ group.display_title }}</a>
+                            <div class="submenu-panel">
+                                {% for item in group.items.all %}
+                                    <a href="{{ item.href }}"{% if item.open_in_new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ item.display_title }}</a>
+                                {% empty %}
+                                    <span class="submenu-empty">No submenu items yet.</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'core:navigation-group' group.slug %}">{{ group.display_title }}</a>
                     {% endif %}
-                    <a class="nav-accent" href="{% url 'accounts:logout' %}">లాగ్ అవుట్</a>
+                {% endfor %}
+                {% if user.is_authenticated %}
+                    <hr style="margin: 10px 0;">
+                    <span style="display: block; padding: 10px 0; font-size: 0.9em;">నమస్కారం, {{ user.get_full_name|default:user.mobile_number }}</span>
+                    <a href="{% url 'core:dashboard' %}">ড్യాష్‌బోర్డ్</a>
+                    <a href="{% url 'accounts:logout' %}">లాగ్‌అవుట్</a>
                 {% else %}
-                    <a class="nav-accent" href="{% url 'accounts:login' %}">ప్రవేశం</a>
+                    <hr style="margin: 10px 0;">
+                    <a href="{% url 'accounts:login' %}">ప్రవేశించండి</a>
+                    <a href="{% url 'directory:register' %}">నమోదు</a>
                 {% endif %}
             </nav>
         </div>
@@ -135,10 +152,8 @@
             <div>
                 <p class="footer-eyebrow">సేవా విభాగం</p>
                 <ul class="footer-links">
-                    <li><a href="{% url 'accounts:login' %}">సభ్యుల ప్రవేశం</a></li>
-                    <li><a href="{% url 'directory:map-search' %}">జిల్లా మ్యాప్ శోధన</a></li>
-                    <li><a href="{% url 'meetings:view' %}">రాబోయే సమావేశాలు</a></li>
-                    <li><a href="{% url 'songs:search' %}">పాటలు మరియు పుస్తకాలు</a></li>
+                    <li><a href="{% url 'core:navigation-group' 'services' %}">Services</a></li>
+                    <li><a href="{% url 'core:navigation-group' 'account' %}">Account</a></li>
                 </ul>
             </div>
             <div>

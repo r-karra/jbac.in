@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Submit Meeting | JBAC{% endblock %}
+
+{% block content %}
+<section class="page-hero page-hero-tight">
+    <div class="container" data-reveal>
+        <p class="eyebrow">Account</p>
+        <h1>Submit Meeting Information</h1>
+        <p class="hero-text">Share meeting details with the community.</p>
+    </div>
+</section>
+
+<section class="section-shell">
+    <div class="container">
+        <div class="form-wrapper" data-reveal>
+            <form method="post" class="form-standard">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div class="form-group">
+                        {{ form.meeting_type }}
+                        {% if form.meeting_type.errors %}<small class="form-error">{{ form.meeting_type.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.title }}
+                        {% if form.title.errors %}<small class="form-error">{{ form.title.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.speaker_1 }}
+                        {% if form.speaker_1.errors %}<small class="form-error">{{ form.speaker_1.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.speaker_2 }}
+                        {% if form.speaker_2.errors %}<small class="form-error">{{ form.speaker_2.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.speaker_3 }}
+                        {% if form.speaker_3.errors %}<small class="form-error">{{ form.speaker_3.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.speaker_4 }}
+                        {% if form.speaker_4.errors %}<small class="form-error">{{ form.speaker_4.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.date }}
+                        {% if form.date.errors %}<small class="form-error">{{ form.date.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.time }}
+                        {% if form.time.errors %}<small class="form-error">{{ form.time.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.end_time }}
+                        {% if form.end_time.errors %}<small class="form-error">{{ form.end_time.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.location }}
+                        {% if form.location.errors %}<small class="form-error">{{ form.location.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.district }}
+                        {% if form.district.errors %}<small class="form-error">{{ form.district.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.contact_person }}
+                        {% if form.contact_person.errors %}<small class="form-error">{{ form.contact_person.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.contact_phone }}
+                        {% if form.contact_phone.errors %}<small class="form-error">{{ form.contact_phone.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.contact_email }}
+                        {% if form.contact_email.errors %}<small class="form-error">{{ form.contact_email.errors }}</small>{% endif %}
+                    </div>
+                    <div class="form-group form-group-full">
+                        {{ form.description }}
+                        {% if form.description.errors %}<small class="form-error">{{ form.description.errors }}</small>{% endif %}
+                    </div>
+                </div>
+                <button type="submit" class="button-primary">Submit Meeting</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

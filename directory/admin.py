@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import BelieverProfile, ChurchProfile, OrganizationProfile, PastorProfile, StudentProfile
+from .models import BelieverProfile, ChurchProfile, OrganizationProfile, PastorProfile, StudentProfile, Leader, Marriage
 
 
 @admin.register(BelieverProfile)
@@ -36,3 +36,101 @@ class OrganizationProfileAdmin(admin.ModelAdmin):
 	list_display = ("organization_name", "founder_name", "district", "state", "is_approved", "is_public")
 	list_filter = ("district", "state", "is_approved", "is_public")
 	search_fields = ("organization_name", "founder_name", "user__mobile_number", "user__email")
+
+
+@admin.register(Leader)
+class LeaderAdmin(admin.ModelAdmin):
+	list_display = ("name", "role", "district", "organization_name", "is_approved", "posted_date")
+	list_filter = ("role", "district", "is_approved", "posted_date")
+	search_fields = ("name", "organization_name", "email", "phone")
+	readonly_fields = ("posted_date", "created_at", "updated_at")
+	fieldsets = (
+		(
+			"Leader Details",
+			{
+				"fields": ("name", "role", "organization_name")
+			},
+		),
+		(
+			"Location",
+			{
+				"fields": ("district", "state")
+			},
+		),
+		(
+			"Contact",
+			{
+				"fields": ("email", "phone")
+			},
+		),
+		(
+			"Ministry",
+			{
+				"fields": ("years_in_ministry", "biography")
+			},
+		),
+		(
+			"Media",
+			{
+				"fields": ("image_url",)
+			},
+		),
+		(
+			"Meta",
+			{
+				"fields": ("user", "is_approved", "is_public", "posted_date", "created_at", "updated_at")
+			},
+		),
+	)
+
+
+@admin.register(Marriage)
+class MarriageAdmin(admin.ModelAdmin):
+	list_display = ("name", "gender", "district", "marital_status", "is_approved", "posted_date")
+	list_filter = ("gender", "marital_status", "district", "is_approved", "posted_date")
+	search_fields = ("name", "email", "phone", "district")
+	readonly_fields = ("posted_date", "created_at", "updated_at")
+	fieldsets = (
+		(
+			"Personal Details",
+			{
+				"fields": ("name", "gender", "date_of_birth", "marital_status")
+			},
+		),
+		(
+			"Location",
+			{
+				"fields": ("district", "state")
+			},
+		),
+		(
+			"Contact",
+			{
+				"fields": ("email", "phone", "phone_visible")
+			},
+		),
+		(
+			"Professional & Educational",
+			{
+				"fields": ("occupation", "education")
+			},
+		),
+		(
+			"About Me",
+			{
+				"fields": ("about_me", "interests", "looking_for")
+			},
+		),
+		(
+			"Media",
+			{
+				"fields": ("image_url",)
+			},
+		),
+		(
+			"Meta",
+			{
+				"fields": ("submitted_by", "is_approved", "is_public", "posted_date", "created_at", "updated_at")
+			},
+		),
+	)
